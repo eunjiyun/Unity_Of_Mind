@@ -1,4 +1,4 @@
-﻿#include "shaders.h"
+#include "shaders.h"
 #include "stdafx.h"
 
 // 좌표계
