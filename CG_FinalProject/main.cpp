@@ -1,3 +1,8 @@
+#include <Windows.h>
+#include <MMSystem.h> 
+#pragma comment(lib, "msimg32.lib")
+#pragma comment(lib, "winmm.lib")
+
 #include "shaders.h"
 #include "stdafx.h"
 
@@ -47,6 +52,8 @@ glm::mat4 projection;
 
 void main(int argc , char** argv)
 {
+    PlaySound("inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
