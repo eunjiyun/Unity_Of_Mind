@@ -1,6 +1,9 @@
 #include "shaders.h"
 #include "stdafx.h"
 
+#include "camera.h"
+#include "object.h"
+
 // 좌표계
 typedef class Coord : public Object
 {
@@ -339,14 +342,14 @@ void Wall::init()
     vector<float> wallColors = {
        
         // Z
-        1.f , 0.f , 0.f,
-        1.f , 0.f , 0.f,
-        1.f , 0.f , 0.f,
-        1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
+        1.f , 0.f , 1.f,
+        1.f , 0.f , 1.f,
+        1.f , 0.f , 1.f,
+        1.f , 0.f , 1.f,
+         1.f , 0.f , 1.f,
+         1.f , 0.f , 1.f,
+         1.f , 0.f , 1.f,
+         1.f , 0.f , 1.f,
         // X
         1.f , 0.f , 0.f,
         1.f , 0.f , 0.f,
@@ -424,17 +427,24 @@ void Wall::init()
     };
 
     const vector<GLubyte> wallIndices = {
+
         // Z
+        // 앞면
         4 , 5 , 7,
         7 , 6 , 4,
+        // 뒷면
         1 , 0 , 3,
         0 , 2 , 3,
+        // 바닥면
         1 , 5 , 4,
         4 , 0 , 1,
+        // 윗면
         3 , 2 , 6,
         6 , 7 , 3,
+        // 오른쪽면
         1 , 3 , 7,
         7 , 5 , 1,
+        // 왼쪽면
         6 , 2 , 0,
         0 , 4 , 6,
 
@@ -589,7 +599,7 @@ void Wall::drawZ(GLuint shaderProgramID)
     zModel = glm::translate(zModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * zModel;
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 1, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawX(GLuint shaderProgramID)
