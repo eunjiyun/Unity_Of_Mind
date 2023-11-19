@@ -1,6 +1,4 @@
-#ifndef OBJECT_H
-#define OBJECT_H
-
+#pragma once
 #include "stdafx.h"
 
 typedef class Object
@@ -61,6 +59,3 @@ public:
     glm::vec3 getRotate();
 
 } Object;
-
-#endif
-

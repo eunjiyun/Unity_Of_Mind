@@ -1,10 +1,6 @@
-#ifndef WALL_H
-#define WALL_H
-
-#include "stdafx.h"
+#pragma once
 #include "object.h"
 
-// 벽 (플레이어가 이 벽을 피해야 함)
 typedef class Wall : public Object
 {
 
@@ -34,10 +30,7 @@ public:
     void render(GLuint shaderProgramID) override;
     void reset();
 
-    // 벽 이동
-    void moveWall();
-
 } Wall;
-Wall wall; // 벽 객체 (플레이어가 피해야 하는 벽)
 
-#endif
+
+

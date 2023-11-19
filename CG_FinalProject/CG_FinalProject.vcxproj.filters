@@ -30,6 +30,9 @@
     <ClInclude Include="wall.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl" />
@@ -49,6 +52,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="wall.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="base.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
