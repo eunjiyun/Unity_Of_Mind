@@ -1,45 +1,16 @@
+#include "stdafx.h"
 #include "shaders.h"
-//#include "stdafx.h"
 
 #include "camera.h"
-<<<<<<< HEAD
 #include "object.h"
 #include "base.h"
 #include "wall.h"
 #include "player.h"
-=======
-//#include "object.h"
-#include "wall.h"
-
-
-
-
-// 좌표계
-typedef class Coord : public Object
-{
-public:
-    void init() override;
-    void render(GLuint shaderProgramID) override;
-} Coord;
-Coord coord; // 좌표계 객체
-
-// 바닥
-typedef class Base : public Object
-{
-public:
-    void init() override;
-    void render(GLuint shaderProgramID) override;
-} Base;
-Base base; // 바닥 객체
-
-
->>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 
 // 카메라
 Camera camera;
 void initCamera();
 
-<<<<<<< HEAD
 // 바닥
 Base base;
 
@@ -48,9 +19,6 @@ Wall wall;
 
 // 플레이어
 Player player;
-=======
-Wall wall; // 벽 객체 (플레이어가 피해야 하는 벽)
->>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 
 // 오브젝트
 vector<Object*> objects;
@@ -131,57 +99,33 @@ GLvoid Reshape(int w, int h)
 }
 
 GLvoid keyboard(unsigned char key, int x, int y)
-<<<<<<< HEAD
 {
     switch (key)
     {
-    case 'a' : // 왼쪽 이동
+    case 'a': // 왼쪽 이동
         player.moveLeft();
         break;
-    case 'd' : // 오른쪽 이동
+    case 'd': // 오른쪽 이동
         player.moveRight();
         break;
 
-    case 'r' : // 플레이어 빨간색 변경
+    case 'r': // 플레이어 빨간색 변경
         player.changeRed();
         break;
-    case 'g' : // 플레이어 초록색 변경
+    case 'g': // 플레이어 초록색 변경
         player.changeGreen();
         break;
-    case 'b' : // 플레이어 파란색 변경
+    case 'b': // 플레이어 파란색 변경
         player.changeBlue();
         break;
-    case 's' : // 플레이어 축소 / 확대
+    case 's': // 플레이어 축소 / 확대
         player.changeSize();
         break;
     }
 
     glutPostRedisplay();
-=======
-{ 
-    switch (key)
-    {
-    case 'a':
-        break;
-    case 'd':
-        break;
-    case 's':
-        break;
-    case 'r':
-        break;
-    case 'g':
-        break;
-    case 'b':
-        break;
-
-    case 'q':
-        exit(-1);
-        break;
-    default:
-        break;
-    }
->>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 }
+
 
 void init()
 {
