@@ -1,9 +1,11 @@
 #include "shaders.h"
-#include "stdafx.h"
+//#include "stdafx.h"
 
 #include "camera.h"
-#include "object.h"
+//#include "object.h"
 #include "wall.h"
+
+
 
 
 // 좌표계
@@ -30,6 +32,8 @@ Base base; // 바닥 객체
 Camera camera;
 void initCamera();
 
+Wall wall; // 벽 객체 (플레이어가 피해야 하는 벽)
+
 // 오브젝트
 vector<Object*> objects;
 
@@ -54,11 +58,13 @@ glm::mat4 projection;
 
 void main(int argc , char** argv)
 {
+    PlaySound("inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(windowWidth, windowHeight);
-    glutCreateWindow("CG_FinalProject");
+    glutCreateWindow("Unity of Mind");
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
     {
@@ -66,7 +72,7 @@ void main(int argc , char** argv)
         exit(EXIT_FAILURE);
     }
     else
-        std::cout << "GLEW Initialized" << std::endl;
+        std::cout << "Game Start!" << std::endl;
 
     glEnable(GL_DEPTH_TEST);
 
@@ -107,7 +113,29 @@ GLvoid Reshape(int w, int h)
 }
 
 GLvoid keyboard(unsigned char key, int x, int y)
-{ }
+{ 
+    switch (key)
+    {
+    case 'a':
+        break;
+    case 'd':
+        break;
+    case 's':
+        break;
+    case 'r':
+        break;
+    case 'g':
+        break;
+    case 'b':
+        break;
+
+    case 'q':
+        exit(-1);
+        break;
+    default:
+        break;
+    }
+}
 
 void init()
 {

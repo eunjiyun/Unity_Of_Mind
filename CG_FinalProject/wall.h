@@ -1,7 +1,7 @@
 #ifndef WALL_H
 #define WALL_H
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "object.h"
 
 // 벽 (플레이어가 이 벽을 피해야 함)
@@ -38,6 +38,6 @@ public:
     void moveWall();
 
 } Wall;
-Wall wall; // 벽 객체 (플레이어가 피해야 하는 벽)
+
 
 #endif
