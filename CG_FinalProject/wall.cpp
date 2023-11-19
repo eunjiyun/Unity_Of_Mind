@@ -1,4 +1,5 @@
 #include "wall.h"
+#define CUBE_INDEX_COUNT 36
 
 void Wall::init()
 {
@@ -104,92 +105,14 @@ void Wall::init()
         0.4f , 0.9f , -.7f
     };
 
-    vector<float> wallColors = {
+    vector<float> wallColors;
 
-        // Z
-        1.f , 0.f , 1.f,
-        1.f , 0.f , 1.f,
-        1.f , 0.f , 1.f,
-        1.f , 0.f , 1.f,
-         1.f , 0.f , 1.f,
-         1.f , 0.f , 1.f,
-         1.f , 0.f , 1.f,
-         1.f , 0.f , 1.f,
-         // X
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-
-         // C
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         // A
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         // S
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         // D
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         // Q
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         // W
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         // E
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-          1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-         1.f , 0.f , 0.f,
-
-    };
+    for (int i = 0; i < 8 * 9; i++)
+    {
+        wallColors.push_back(1.f);
+        wallColors.push_back(0.f);
+        wallColors.push_back(0.f);
+    }
 
     const vector<GLubyte> wallIndices = {
 
@@ -356,15 +279,15 @@ void Wall::reset()
     scale = glm::vec3(1.0f);
 }
 
-const int glDrawElements_constNum = 36;
-
 void Wall::drawZ(GLuint shaderProgramID)
 {
     zModel = glm::mat4(1.f);
     zModel = glm::translate(zModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * zModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 1, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 1, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawX(GLuint shaderProgramID)
@@ -372,8 +295,10 @@ void Wall::drawX(GLuint shaderProgramID)
     xModel = glm::mat4(1.f);
     xModel = glm::translate(xModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * xModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 2, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 2, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawC(GLuint shaderProgramID)
@@ -381,8 +306,10 @@ void Wall::drawC(GLuint shaderProgramID)
     cModel = glm::mat4(1.f);
     cModel = glm::translate(xModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * cModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 3, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 3, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawA(GLuint shaderProgramID)
@@ -390,8 +317,10 @@ void Wall::drawA(GLuint shaderProgramID)
     aModel = glm::mat4(1.f);
     aModel = glm::translate(aModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * aModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 4, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 4, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawS(GLuint shaderProgramID)
@@ -399,8 +328,10 @@ void Wall::drawS(GLuint shaderProgramID)
     sModel = glm::mat4(1.f);
     sModel = glm::translate(sModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * sModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 5, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 5, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawD(GLuint shaderProgramID)
@@ -408,8 +339,10 @@ void Wall::drawD(GLuint shaderProgramID)
     dModel = glm::mat4(1.f);
     dModel = glm::translate(dModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * dModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 6, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 6, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawQ(GLuint shaderProgramID)
@@ -417,8 +350,10 @@ void Wall::drawQ(GLuint shaderProgramID)
     qModel = glm::mat4(1.f);
     qModel = glm::translate(qModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * qModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 7, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 7, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawW(GLuint shaderProgramID)
@@ -426,8 +361,10 @@ void Wall::drawW(GLuint shaderProgramID)
     wModel = glm::mat4(1.f);
     wModel = glm::translate(wModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * wModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 8, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 8, GL_UNSIGNED_BYTE, 0);
 }
 
 void Wall::drawE(GLuint shaderProgramID)
@@ -435,6 +372,8 @@ void Wall::drawE(GLuint shaderProgramID)
     eModel = glm::mat4(1.f);
     eModel = glm::translate(eModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * eModel;
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawElements(GL_TRIANGLES, glDrawElements_constNum * 9, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 9, GL_UNSIGNED_BYTE, 0);
 }

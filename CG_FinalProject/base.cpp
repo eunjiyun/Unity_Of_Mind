@@ -24,6 +24,8 @@ void Base::init()
 void Base::render(GLuint shaderProgramID)
 {
     model = glm::mat4(1.f);
+
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 0.5f, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
     glBindVertexArray(vao);

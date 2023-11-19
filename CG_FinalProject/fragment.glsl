@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec3 fColor;
+uniform vec3 fColor;
 out vec4 fragColor;
 
 void main()

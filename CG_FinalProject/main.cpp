@@ -5,6 +5,7 @@
 #include "object.h"
 #include "base.h"
 #include "wall.h"
+#include "player.h"
 
 // 카메라
 Camera camera;
@@ -15,6 +16,9 @@ Base base;
 
 // 벽
 Wall wall;
+
+// 플레이어
+Player player;
 
 // 오브젝트
 vector<Object*> objects;
@@ -93,16 +97,43 @@ GLvoid Reshape(int w, int h)
 }
 
 GLvoid keyboard(unsigned char key, int x, int y)
-{ }
+{
+    switch (key)
+    {
+    case 'a' : // 왼쪽 이동
+        player.moveLeft();
+        break;
+    case 'd' : // 오른쪽 이동
+        player.moveRight();
+        break;
+
+    case 'r' : // 플레이어 빨간색 변경
+        player.changeRed();
+        break;
+    case 'g' : // 플레이어 초록색 변경
+        player.changeGreen();
+        break;
+    case 'b' : // 플레이어 파란색 변경
+        player.changeBlue();
+        break;
+    case 's' : // 플레이어 축소 / 확대
+        player.changeSize();
+        break;
+    }
+
+    glutPostRedisplay();
+}
 
 void init()
 {
     initCamera();
     base.init();
     wall.init();
+    player.init();
 
     objects.push_back(&base);
     objects.push_back(&wall);
+    objects.push_back(&player);
 }
 
 void initCamera()

@@ -131,6 +131,7 @@
     <ClInclude Include="base.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="shaders.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="wall.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
