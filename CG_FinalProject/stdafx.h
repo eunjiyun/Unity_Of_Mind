@@ -13,6 +13,10 @@
 #include <random>
 #include <vector>
 #include <algorithm>
+#include <Windows.h>
+#include <MMSystem.h> 
+#pragma comment(lib, "msimg32.lib")
+#pragma comment(lib, "winmm.lib")
 
 #define _USE_MATH_DEFINES
 #include <math.h>

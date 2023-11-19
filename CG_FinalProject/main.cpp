@@ -1,16 +1,45 @@
 #include "shaders.h"
-#include "stdafx.h"
+//#include "stdafx.h"
 
 #include "camera.h"
+<<<<<<< HEAD
 #include "object.h"
 #include "base.h"
 #include "wall.h"
 #include "player.h"
+=======
+//#include "object.h"
+#include "wall.h"
+
+
+
+
+// 좌표계
+typedef class Coord : public Object
+{
+public:
+    void init() override;
+    void render(GLuint shaderProgramID) override;
+} Coord;
+Coord coord; // 좌표계 객체
+
+// 바닥
+typedef class Base : public Object
+{
+public:
+    void init() override;
+    void render(GLuint shaderProgramID) override;
+} Base;
+Base base; // 바닥 객체
+
+
+>>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 
 // 카메라
 Camera camera;
 void initCamera();
 
+<<<<<<< HEAD
 // 바닥
 Base base;
 
@@ -19,6 +48,9 @@ Wall wall;
 
 // 플레이어
 Player player;
+=======
+Wall wall; // 벽 객체 (플레이어가 피해야 하는 벽)
+>>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 
 // 오브젝트
 vector<Object*> objects;
@@ -44,11 +76,13 @@ glm::mat4 projection;
 
 void main(int argc , char** argv)
 {
+    PlaySound("inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(windowWidth, windowHeight);
-    glutCreateWindow("CG_FinalProject");
+    glutCreateWindow("Unity of Mind");
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
     {
@@ -56,7 +90,7 @@ void main(int argc , char** argv)
         exit(EXIT_FAILURE);
     }
     else
-        std::cout << "GLEW Initialized" << std::endl;
+        std::cout << "Game Start!" << std::endl;
 
     glEnable(GL_DEPTH_TEST);
 
@@ -97,6 +131,7 @@ GLvoid Reshape(int w, int h)
 }
 
 GLvoid keyboard(unsigned char key, int x, int y)
+<<<<<<< HEAD
 {
     switch (key)
     {
@@ -122,6 +157,30 @@ GLvoid keyboard(unsigned char key, int x, int y)
     }
 
     glutPostRedisplay();
+=======
+{ 
+    switch (key)
+    {
+    case 'a':
+        break;
+    case 'd':
+        break;
+    case 's':
+        break;
+    case 'r':
+        break;
+    case 'g':
+        break;
+    case 'b':
+        break;
+
+    case 'q':
+        exit(-1);
+        break;
+    default:
+        break;
+    }
+>>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 }
 
 void init()

@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 #pragma once
+=======
+#ifndef WALL_H
+#define WALL_H
+
+//#include "stdafx.h"
+>>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 #include "object.h"
 
 typedef class Wall : public Object
@@ -31,6 +38,10 @@ public:
     void reset();
 
 } Wall;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0bfbbac86e898931a4569528486f4e2a2d56dc02
 
 
 
