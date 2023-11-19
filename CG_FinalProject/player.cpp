@@ -1,19 +1,6 @@
 #include "player.h"
 #define CUBE_INDEX_COUNT 36
 
-// 이동
-float playerMove = 0.0f;
-
-// 색
-float pColor_r = 1.0f;
-float pColor_g = 0.0f;
-float pColor_b = 0.0f;
-
-// 사이즈
-float scale_x = 1.0f;
-float scale_y = 1.0f;
-const float scale_z = 1.0f;
-
 void Player::init()
 {
     const vector<float> playerVertices = {
@@ -58,6 +45,8 @@ void Player::init()
        0 , 4 , 6,
     };
 
+    color = glm::vec3(1.0f, 0.0f, 0.0f);
+
     initModel(playerVertices, playerColors, playerIndices);
     initBuffer();
 }
@@ -76,63 +65,63 @@ void Player::render(GLuint shaderProgramID)
 void Player::drawP(GLuint shaderProgramID)
 {
     pModel = glm::mat4(1.f);
-    pModel = glm::translate(pModel, glm::vec3(playerMove, 0.f, 0.f));
-    pModel = glm::scale(pModel, glm::vec3(scale_x, scale_y, scale_z));
+    pModel = glm::translate(pModel, glm::vec3(0.f, 0.f, 0.f));
+    pModel = glm::scale(pModel, glm::vec3(scale.x , scale.y , scale.z));
     model = model * pModel;
 
-    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), pColor_r, pColor_g, pColor_b);
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), color.r, color.g, color.b);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT, GL_UNSIGNED_BYTE, 0);
 }
 
 void Player::moveLeft()
 {
-    if(playerMove > -0.35f)
+    if(pos.x > -0.35f)
     {
-        playerMove -= 0.05f;
-    }
+        pos.x -= 0.05f;
+    } 
 }
 
 void Player::moveRight()
 {
-    if (playerMove < 0.35f)
+    if (pos.x < 0.35f)
     {
-        playerMove += 0.05f;
+        pos.x += 0.05f;
     }
 }
 
 void Player::changeRed()
 {
-    pColor_r = 1.0f;
-    pColor_g = 0.0f;
-    pColor_b = 0.0f;
+    color.r = 1.0f;
+    color.g = 0.0f;
+    color.b = 0.0f;
 }
 
 void Player::changeGreen()
 {
-    pColor_r = 0.0f;
-    pColor_g = 1.0f;
-    pColor_b = 0.0f;
+    color.r = 0.0f;
+    color.g = 1.0f;
+    color.b = 0.0f;
 }
 
 void Player::changeBlue()
 {
-    pColor_r = 0.0f;
-    pColor_g = 0.0f;
-    pColor_b = 1.0f;
+    color.r = 0.0f;
+    color.g = 0.0f;
+    color.b = 1.0f;
 }
 
 void Player::changeSize()
 {
-    if(scale_x == 0.5f)
+    if(scale.x == 0.5f)
     {
-        scale_x = 1.0f;
-        scale_y = 1.0f;
+        scale.x = 1.0f;
+        scale.y = 1.0f;
     }
     else
     {
-        scale_x = 0.5f;
-        scale_y = 0.5f;
+        scale.x = 0.5f;
+        scale.y = 0.5f;
     }
 }
 

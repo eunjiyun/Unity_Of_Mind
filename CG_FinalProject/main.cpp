@@ -35,12 +35,17 @@ GLuint windowHeight = 800;
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 GLvoid keyboard(unsigned char key, int x, int y);
+GLvoid update(int value);
 
 // shader 변수
 GLuint shaderProgramID;
 glm::mat4 model;
 glm::mat4 view;
 glm::mat4 projection;
+
+// 벽 이동 함수
+void wallUpdate();
+int wallUpdateSpeed = 100;
 
 void main(int argc , char** argv)
 {
@@ -69,6 +74,7 @@ void main(int argc , char** argv)
     // 초기화
     init();
 
+    glutTimerFunc(wallUpdateSpeed , update , 50);
     glutDisplayFunc(drawScene);
     glutReshapeFunc(Reshape);
     glutKeyboardFunc(keyboard);
@@ -126,7 +132,6 @@ GLvoid keyboard(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-
 void init()
 {
     initCamera();
@@ -155,6 +160,21 @@ void initCamera()
     camera.setAngle(-45.f);
     camera.setEye(glm::vec3(0.f, 1.f, 2.f));
 }
+
+GLvoid update(int value)
+{
+    wallUpdate();
+    glutTimerFunc(wallUpdateSpeed, update, value);
+    glutPostRedisplay();
+}
+
+void wallUpdate()
+{
+    wall.moveWall();
+}
+
+
+
 
 
 

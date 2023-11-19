@@ -7,6 +7,7 @@ protected:
     glm::vec3 pos;
     glm::vec3 scale;
     glm::vec3 rotate;
+    glm::vec3 color;
 
     GLuint vao;
     GLuint vbo;
@@ -53,9 +54,15 @@ public:
     void setRotateY(float y);
     void setRotateZ(float z);
 
+    void setColor(glm::vec3 color);
+    void setColorR(float r);
+    void setColorG(float g);
+    void setColorB(float b);
+
     // Getters
     glm::vec3 getPos();
     glm::vec3 getScale();
     glm::vec3 getRotate();
+    glm::vec3 getColor();
 
 } Object;

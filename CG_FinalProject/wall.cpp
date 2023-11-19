@@ -249,6 +249,16 @@ void Wall::init()
         64, 68, 70,
     };
 
+    color_z = glm::vec3(1.f, 0.f, 0.f);
+    color_x = glm::vec3(1.f, 0.f, 0.f);
+    color_c = glm::vec3(1.f, 0.f, 0.f);
+    color_a = glm::vec3(1.f, 0.f, 0.f);
+    color_s = glm::vec3(1.f, 0.f, 0.f);
+    color_d = glm::vec3(1.f, 0.f, 0.f);
+    color_q = glm::vec3(1.f, 0.f, 0.f);
+    color_w = glm::vec3(1.f, 0.f, 0.f);
+    color_e = glm::vec3(1.f, 0.f, 0.f);
+
     initModel(wallVertices, wallColors, wallIndices);
     initBuffer();
 }
@@ -279,13 +289,22 @@ void Wall::reset()
     scale = glm::vec3(1.0f);
 }
 
+void Wall::moveWall()
+{
+    if(pos.z >= 1.7f)
+    {
+        reset();
+    }
+    pos.z += 0.01f;
+}
+
 void Wall::drawZ(GLuint shaderProgramID)
 {
     zModel = glm::mat4(1.f);
     zModel = glm::translate(zModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * zModel;
 
-    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);
+    glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), color_z.r, 0.5f, 0.5f);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
     glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT * 1, GL_UNSIGNED_BYTE, 0);
 }
@@ -304,7 +323,7 @@ void Wall::drawX(GLuint shaderProgramID)
 void Wall::drawC(GLuint shaderProgramID)
 {
     cModel = glm::mat4(1.f);
-    cModel = glm::translate(xModel, glm::vec3(0.f, 0.f, 0.f));
+    cModel = glm::translate(cModel, glm::vec3(0.f, 0.f, 0.f));
     model = model * cModel;
 
     glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1.0f, 0.5f, 0.5f);

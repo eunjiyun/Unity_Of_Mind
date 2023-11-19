@@ -39,9 +39,16 @@ void Object::setRotateX(float x) { this->rotate.x = x; }
 void Object::setRotateY(float y) { this->rotate.y = y; }
 void Object::setRotateZ(float z) { this->rotate.z = z; }
 
+void Object::setColor(glm::vec3 color) { this->color = color; }
+void Object::setColorR(float r) { this->color.r = r; }
+void Object::setColorG(float g) { this->color.g = g; }
+void Object::setColorB(float b) { this->color.b = b; }
+
 glm::vec3 Object::getPos() { return pos; }
 glm::vec3 Object::getScale() { return scale; }
 glm::vec3 Object::getRotate() { return rotate; }
+glm::vec3 Object::getColor() { return color; }
+
 
 void Object::setModelPos(vector<float> vertices)
 {
