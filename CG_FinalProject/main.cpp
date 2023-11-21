@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "shaders.h"
-
 #include "camera.h"
 #include "object.h"
 #include "base.h"
@@ -20,7 +19,7 @@ Wall wall;
 // 플레이어
 Player player;
 
-// 오브젝트
+// 오브젝트들
 vector<Object*> objects;
 
 // 초기화
@@ -45,7 +44,7 @@ glm::mat4 projection;
 
 // 벽 이동 함수
 void wallUpdate();
-int wallUpdateSpeed = 100;
+int wallUpdateSpeed = 20;
 
 void main(int argc , char** argv)
 {
@@ -114,7 +113,6 @@ GLvoid keyboard(unsigned char key, int x, int y)
     case 'd': // 오른쪽 이동
         player.moveRight();
         break;
-
     case 'r': // 플레이어 빨간색 변경
         player.changeRed();
         break;
@@ -135,12 +133,14 @@ GLvoid keyboard(unsigned char key, int x, int y)
 void init()
 {
     initCamera();
-    base.init();
-    wall.init();
-    player.init();
 
+    base.init();
     objects.push_back(&base);
-    objects.push_back(&wall);
+    
+	wall.init();
+	objects.push_back(&wall);
+    
+    player.init();
     objects.push_back(&player);
 }
 
@@ -172,6 +172,7 @@ void wallUpdate()
 {
     wall.moveWall();
 }
+
 
 
 

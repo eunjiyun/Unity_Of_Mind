@@ -1,49 +1,44 @@
 #pragma once
 #include "object.h"
 
-typedef class Wall : public Object
+typedef class Cube : public Object
 {
-
 private:
-    glm::mat4 zModel;
-    glm::mat4 xModel;
     glm::mat4 cModel;
-    glm::mat4 aModel;
-    glm::mat4 sModel;
-    glm::mat4 dModel;
-    glm::mat4 qModel;
-    glm::mat4 wModel;
-    glm::mat4 eModel;
-
-    glm::vec3 color_z;
-    glm::vec3 color_x;
-    glm::vec3 color_c;
-    glm::vec3 color_a;
-    glm::vec3 color_s;
-    glm::vec3 color_d;
-    glm::vec3 color_q;
-    glm::vec3 color_w;
-    glm::vec3 color_e;
-
-    void drawZ(GLuint shaderProgramID);
-    void drawX(GLuint shaderProgramID);
-    void drawC(GLuint shaderProgramID);
-    void drawA(GLuint shaderProgramID);
-    void drawS(GLuint shaderProgramID);
-    void drawD(GLuint shaderProgramID);
-    void drawQ(GLuint shaderProgramID);
-    void drawW(GLuint shaderProgramID);
-    void drawE(GLuint shaderProgramID);
+    glm::vec3 color;
 
 public:
     void init() override;
     void render(GLuint shaderProgramID) override;
+    void drawCube(GLuint shaderProgramID);
     void reset();
+    bool moveCube();
+
+    void changeEmpty();
+
+    void changeRed();
+    void changeGreen();
+    void changeBlue();
+
+    void change_SmallSize();
+
+} Cube;
+
+typedef class Wall : public Cube
+{
+private :
+    Cube cube[3][3];
+    int	random_num[36][3];
+
+public :
+    void init();
+    void render(GLuint shaderProgramID) override;
+    Cube getCube(int i , int j);
 
     void moveWall();
+    void makeWall(int i , int j , int cur_idx);
 
-} Wall;
-
+}Wall;
 
 
 

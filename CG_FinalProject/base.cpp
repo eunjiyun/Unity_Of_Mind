@@ -30,7 +30,6 @@ void Base::render(GLuint shaderProgramID)
 
     glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), color.r, color.g, color.b);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 }
