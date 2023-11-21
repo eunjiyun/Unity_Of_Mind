@@ -14,12 +14,15 @@ public:
     void reset();
     bool moveCube();
 
-    void changeEmpty();
+    // 1 스테이지 - 랜덤값의 나머지가 0이면 뚫림
+    void changeEmpty(); 
 
+    // 2 스테이지 - 나머지가 0 , 1 , 2 면 각각 r , g , b
     void changeRed();
     void changeGreen();
     void changeBlue();
 
+    // 3 스테이지 - 나머지가 0 이면 사이즈 줄임
     void change_SmallSize();
 
 } Cube;
@@ -36,6 +39,8 @@ public :
     Cube getCube(int i , int j);
 
     void moveWall();
+
+    // 1 , 2 , 3 스테이지를 통합
     void makeWall(int i , int j , int cur_idx);
 
 }Wall;
