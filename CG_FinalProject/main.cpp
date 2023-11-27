@@ -46,131 +46,160 @@ glm::mat4 projection;
 void wallUpdate();
 int wallUpdateSpeed = 20;
 
-void main(int argc , char** argv)
+CameraMode cameraMode = THIRD_PERSON;
+
+void main(int argc, char** argv)
 {
-    PlaySound("inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+	PlaySound("inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(windowWidth, windowHeight);
-    glutCreateWindow("Unity of Mind");
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK)
-    {
-        std::cerr << "Unable to initialize GLEW" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    else
-        std::cout << "Game Start!" << std::endl;
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(windowWidth, windowHeight);
 
-    glEnable(GL_DEPTH_TEST);
+	glutCreateWindow("Unity of Mind");
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK)
+	{
+		std::cerr << "Unable to initialize GLEW" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	else
+		std::cout << "Game Start!" << std::endl;
 
-    char vertexFile[] = "vertex.glsl";
-    char fragmentFile[] = "fragment.glsl";
-    shaderProgramID = initShader(vertexFile, fragmentFile);
+	// GLEW 초기화
+	if (glewInit() != GLEW_OK) {
+		std::cerr << "Failed to initialize GLEW" << std::endl;
+		exit(EXIT_FAILURE);
+	}
 
-    // 초기화
-    init();
+	glEnable(GL_DEPTH_TEST);
 
-    glutTimerFunc(wallUpdateSpeed , update , 50);
-    glutDisplayFunc(drawScene);
-    glutReshapeFunc(Reshape);
-    glutKeyboardFunc(keyboard);
-    glutMainLoop();
+	char vertexFile[] = "vertex.glsl";
+	char fragmentFile[] = "fragment.glsl";
+	shaderProgramID = initShader(vertexFile, fragmentFile);
+
+	// 초기화
+	init();
+
+	glutTimerFunc(wallUpdateSpeed, update, 50);
+	glutDisplayFunc(drawScene);
+	glutReshapeFunc(Reshape);
+	glutKeyboardFunc(keyboard);
+
+	glutMainLoop();
 }
 
 GLvoid drawScene()
 {
-    glClearColor(g_color[0], g_color[1], g_color[2], g_color[3]);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(shaderProgramID);
+	glClearColor(g_color[0], g_color[1], g_color[2], g_color[3]);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUseProgram(shaderProgramID);
 
-    glViewport(0, 0, 800, 800);
+	glViewport(0, 0, 800, 800);
 
-    // Camera
-    camera.setCamera(shaderProgramID, 0);
+	// Camera
+	camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
 
-    // Object Draw
-    for (int i = 0; i < objects.size(); ++i)
-        (*objects[i]).render(shaderProgramID);
+	// Object Draw
+	for (int i = 0; i < objects.size(); ++i)
+		(*objects[i]).render(shaderProgramID);
 
-    glutSwapBuffers();
+	glutSwapBuffers();
 }
 
 GLvoid Reshape(int w, int h)
 {
-    glViewport(0, 0, 800, 800);
+	glViewport(0, 0, 800, 800);
 }
 
 GLvoid keyboard(unsigned char key, int x, int y)
 {
-    switch (key)
-    {
-    case 'a': // 왼쪽 이동
-        player.moveLeft();
-        break;
-    case 'd': // 오른쪽 이동
-        player.moveRight();
-        break;
-    case 'r': // 플레이어 빨간색 변경
-        player.changeRed();
-        break;
-    case 'g': // 플레이어 초록색 변경
-        player.changeGreen();
-        break;
-    case 'b': // 플레이어 파란색 변경
-        player.changeBlue();
-        break;
-    case 's': // 플레이어 축소 / 확대
-        player.changeSize();
-        break;
-    }
+	switch (key)
+	{
+	case 'a': // 왼쪽 이동
+		player.moveLeft();
 
-    glutPostRedisplay();
+		if (FIRST_PERSON == cameraMode)
+			camera.moveLeft();
+		break;
+	case 'd': // 오른쪽 이동
+		player.moveRight();
+
+		if (FIRST_PERSON == cameraMode)
+			camera.moveRight();
+		break;
+	case 'r': // 플레이어 빨간색 변경
+		player.changeRed();
+		break;
+	case 'g': // 플레이어 초록색 변경
+		player.changeGreen();
+		break;
+	case 'b': // 플레이어 파란색 변경
+		player.changeBlue();
+		break;
+	case 's': // 플레이어 축소 / 확대
+		player.changeSize();
+		break;
+
+	case '1':
+		cameraMode = FIRST_PERSON;
+		camera.setEye(glm::vec3(player.getPos().x,camera.getEye().y, camera.getEye().z));
+		break;
+	case '3':
+		cameraMode = THIRD_PERSON;
+		break;
+	case 'q':
+		exit(-1);
+		break;
+	}
+
+	glutPostRedisplay();
 }
+
 
 void init()
 {
-    initCamera();
+	initCamera();
 
-    base.init();
-    objects.push_back(&base);
-    
+	base.init();
+	objects.push_back(&base);
+
 	wall.init();
 	objects.push_back(&wall);
-    
-    player.init();
-    objects.push_back(&player);
+
+	player.init();
+	objects.push_back(&player);
 }
 
 void initCamera()
 {
-    camera.setFovy(45.0f);
-    camera.setzNear(0.1f);
-    camera.setzFar(50.0f);
+	camera.setFovy(45.0f);
+	camera.setzNear(0.1f);
+	camera.setzFar(50.0f);
 
-    camera.setLeft(-2.0f);
-    camera.setRight(2.0f);
-    camera.setBottom(-2.0f);
-    camera.setTop(2.0f);
+	camera.setLeft(-2.0f);
+	camera.setRight(2.0f);
+	camera.setBottom(-2.0f);
+	camera.setTop(2.0f);
 
-    camera.setYaw(-90.f);
-    camera.setPitch(-20.f);
-    camera.setAngle(-45.f);
-    camera.setEye(glm::vec3(0.f, 1.f, 2.f));
+	camera.setYaw(-90.f);
+	camera.setPitch(-20.f);
+	camera.setAngle(-45.f);
+
+	camera.setEye(glm::vec3(0.f, 1.f, 2.f));
 }
 
 GLvoid update(int value)
 {
-    wallUpdate();
-    glutTimerFunc(wallUpdateSpeed, update, value);
-    glutPostRedisplay();
+	wallUpdate();
+	glutTimerFunc(wallUpdateSpeed, update, value);
+	glutPostRedisplay();
 }
 
 void wallUpdate()
 {
-    wall.moveWall();
+	wall.moveWall();
 }
 
 
