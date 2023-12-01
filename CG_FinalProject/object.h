@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "FileIn.h"
 
 typedef class Object
 {
@@ -20,6 +21,9 @@ protected:
 
     glm::mat4 model;
 
+    GLuint nbo;
+    GLuint tbo;
+    CFileIn in;
 public:
     Object();
     Object(vector<float> vertices, vector<float> colors);
@@ -28,6 +32,7 @@ public:
     virtual void init();
     void initPos();
     void initBuffer();
+    //void initImageBuffer();
 
     void setModelPos(vector<float> vertices);
     void setModelColor(vector<float> colors);

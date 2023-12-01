@@ -130,9 +130,12 @@
   <ItemGroup>
     <ClInclude Include="base.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="FileIn.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="shaders.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
@@ -143,6 +146,8 @@
   <ItemGroup>
     <ClCompile Include="base.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="FileIn.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="player.cpp" />

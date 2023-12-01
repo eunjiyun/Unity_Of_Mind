@@ -5,10 +5,12 @@
 #include "base.h"
 #include "wall.h"
 #include "player.h"
+#include "Image.h"
 
 // 카메라
 Camera camera;
 void initCamera();
+CameraMode cameraMode = THIRD_PERSON;
 
 // 바닥
 Base base;
@@ -22,13 +24,15 @@ Player player;
 // 오브젝트들
 vector<Object*> objects;
 
+CImage ending;
+
 // 초기화
 void init();
 
 // gl 변수
 GLclampf g_color[4] = { 0.f, 0.f, 0.f, 1.f };
-GLuint windowWidth = 800;
-GLuint windowHeight = 800;
+GLuint windowWidth = BACK_WIDTH;
+GLuint windowHeight = BACK_HEIGHT;
 
 // gl 함수
 GLvoid drawScene(GLvoid);
@@ -46,7 +50,7 @@ glm::mat4 projection;
 void wallUpdate();
 int wallUpdateSpeed = 20;
 
-CameraMode cameraMode = THIRD_PERSON;
+
 
 void main(int argc, char** argv)
 {
@@ -96,21 +100,24 @@ GLvoid drawScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
 
-	glViewport(0, 0, 800, 800);
+	glViewport(0, 0, BACK_WIDTH, BACK_HEIGHT);
 
 	// Camera
 	camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
 
+	ending.render(shaderProgramID);
+
 	// Object Draw
-	for (int i = 0; i < objects.size(); ++i)
-		(*objects[i]).render(shaderProgramID);
+	if(not ending.end)
+		for (int i = 0; i < objects.size(); ++i)
+			(*objects[i]).render(shaderProgramID);
 
 	glutSwapBuffers();
 }
 
 GLvoid Reshape(int w, int h)
 {
-	glViewport(0, 0, 800, 800);
+	glViewport(0, 0, BACK_WIDTH, BACK_HEIGHT);
 }
 
 GLvoid keyboard(unsigned char key, int x, int y)
@@ -152,6 +159,19 @@ GLvoid keyboard(unsigned char key, int x, int y)
 	case 'q':
 		exit(-1);
 		break;
+
+	case '[':
+		if (not ending.end)
+			ending.end = true;
+		else
+			ending.end = false;
+		
+		player.init();
+		//player.setPos(vec3(0, 0, 0));
+		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
+		ending.initTexture();
+
+		break;
 	}
 
 	glutPostRedisplay();
@@ -170,6 +190,9 @@ void init()
 
 	player.init();
 	objects.push_back(&player);
+
+	ending.initBuffer();
+	ending.initTexture();
 }
 
 void initCamera()

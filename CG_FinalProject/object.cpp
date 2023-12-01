@@ -1,5 +1,6 @@
 #include "object.h"
 
+
 Object::Object()
 {
     initPos();
@@ -105,7 +106,7 @@ void Object::initBuffer()
     glGenBuffers(1, &cbo);
     glBindBuffer(GL_ARRAY_BUFFER, cbo);
     glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glEnableVertexAttribArray(1);
 
     if (!indices.empty())
@@ -115,3 +116,26 @@ void Object::initBuffer()
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size(), &indices[0], GL_STATIC_DRAW);
     }
 }
+//void Object::initImageBuffer()
+//{
+//    glGenVertexArrays(1, &vao);
+//    glBindVertexArray(vao);
+//
+//    glGenBuffers(1, &vbo);
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+//    glEnableVertexAttribArray(0);
+//
+//    glGenBuffers(1, &nbo);
+//    glBindBuffer(GL_ARRAY_BUFFER, nbo);
+//    glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+//    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+//    glEnableVertexAttribArray(1);
+//
+//    glGenBuffers(1, &tbo);
+//    glBindBuffer(GL_ARRAY_BUFFER, tbo);
+//    glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
+//    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+//    glEnableVertexAttribArray(2);
+//}

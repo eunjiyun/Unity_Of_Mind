@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <Windows.h>
 #include <MMSystem.h> 
+#include <fstream>
+#include <sstream>
 #pragma comment(lib, "msimg32.lib")
 #pragma comment(lib, "winmm.lib")
 
@@ -27,4 +29,7 @@
 
 using namespace std;
 using namespace glm;
+
+#define BACK_WIDTH 800
+#define BACK_HEIGHT 800
 
