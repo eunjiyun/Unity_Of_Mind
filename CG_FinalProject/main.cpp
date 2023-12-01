@@ -24,7 +24,7 @@ Player player;
 // 오브젝트들
 vector<Object*> objects;
 
-CImage ending;
+CImage screen;
 
 // 초기화
 void init();
@@ -38,6 +38,7 @@ GLuint windowHeight = BACK_HEIGHT;
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 GLvoid keyboard(unsigned char key, int x, int y);
+GLvoid Mouse(int button, int state, int x, int y);
 GLvoid update(int value);
 
 // shader 변수
@@ -54,7 +55,7 @@ int wallUpdateSpeed = 20;
 
 void main(int argc, char** argv)
 {
-	PlaySound("inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+	PlaySound(L"opening.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
@@ -90,7 +91,7 @@ void main(int argc, char** argv)
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(keyboard);
-
+	glutMouseFunc(Mouse);
 	glutMainLoop();
 }
 
@@ -105,10 +106,10 @@ GLvoid drawScene()
 	// Camera
 	camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
 
-	ending.render(shaderProgramID);
+	screen.render(shaderProgramID);
 
 	// Object Draw
-	if(not ending.end)
+	if(1==screen.status)
 		for (int i = 0; i < objects.size(); ++i)
 			(*objects[i]).render(shaderProgramID);
 
@@ -151,7 +152,7 @@ GLvoid keyboard(unsigned char key, int x, int y)
 
 	case '1':
 		cameraMode = FIRST_PERSON;
-		camera.setEye(glm::vec3(player.getPos().x,camera.getEye().y, camera.getEye().z));
+		camera.setEye(glm::vec3(player.getPos().x, camera.getEye().y, camera.getEye().z));
 		break;
 	case '3':
 		cameraMode = THIRD_PERSON;
@@ -161,20 +162,61 @@ GLvoid keyboard(unsigned char key, int x, int y)
 		break;
 
 	case '[':
-		if (not ending.end)
-			ending.end = true;
-		else
-			ending.end = false;
-		
+		if (1 == screen.status) {
+			screen.status = 2;
+			PlaySound(L"win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		}
+		else if (2 == screen.status) {
+			screen.status = 3;
+			PlaySound(L"closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		}
+		else if (3 == screen.status) {
+			screen.status = 1;
+			PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		}
+
 		player.init();
 		//player.setPos(vec3(0, 0, 0));
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
-		ending.initTexture();
+		screen.initTexture();
 
 		break;
 	}
 
+
 	glutPostRedisplay();
+}
+
+GLvoid Mouse(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		//play
+		//x 513 616
+		//y 528 583
+
+		//exit
+		//x 507 603
+		//y 595 648
+
+		//settings
+		//x 505 673
+		//y 663 711
+
+		/*cout << "x : " << x << endl;
+		cout << "y : " << y << endl << endl << endl;*/
+
+		if (513 <= x && 616 >= x and 528 <= y && 583 >= y) {
+			screen.status = 1;
+			screen.initTexture();
+			PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		}
+		else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)
+			exit(-1);
+		else if (505 <= x && 673 >= x and 663 <= y && 711 >= y) {
+			
+		}
+	}
 }
 
 
@@ -191,8 +233,8 @@ void init()
 	player.init();
 	objects.push_back(&player);
 
-	ending.initBuffer();
-	ending.initTexture();
+	screen.initBuffer();
+	screen.initTexture();
 }
 
 void initCamera()

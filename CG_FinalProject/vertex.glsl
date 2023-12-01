@@ -5,10 +5,9 @@ layout(location = 1) in vec3 vNormal;
 layout(location = 2) in vec2 vTexture;
 layout(location = 3) in vec3 vColor;
 
-out vec2 fTexture;
-
 out vec3 fPos;
 out vec3 fNormal;
+out vec2 fTexture;
 out vec3 fColor;
 
 uniform mat4 model;
@@ -23,6 +22,5 @@ void main()
     fNormal = vec3(model * vec4(vNormal, 1.0));
 
     fTexture = vTexture;
-
     fColor = vColor;
 }

@@ -10,7 +10,7 @@ public:
     vector<glm::vec2> uvs;
 
     GLuint textureID;
-    bool end{};
+    int status{0};
 public:
     CImage();
     void render(GLuint shaderProgramID) /*override*/;

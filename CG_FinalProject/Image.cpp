@@ -32,10 +32,7 @@ void CImage::render(GLuint ID)
     model = glm::scale(model, scale);
 
     glUniformMatrix4fv(glGetUniformLocation(ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glUniform1i(glGetUniformLocation(ID, "lightOn"), 0);
-
    
-
     glBindVertexArray(vao);
 
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -81,10 +78,14 @@ void CImage::initTexture()
     glBindTexture(GL_TEXTURE_2D, textureID);
     //stbi_set_flip_vertically_on_load(true); //--- 이미지가 거꾸로 읽힌다면 추가
 
-    if(not end)
+    if (0 == status)
+        data = stbi_load("start.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+    else if (1 == status)
         data = stbi_load("back.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
-    else
-        data = stbi_load("end.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+    else if(2==status)
+        data = stbi_load("win.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+    else 
+        data = stbi_load("over.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
 
     glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
