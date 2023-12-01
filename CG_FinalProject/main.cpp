@@ -24,15 +24,18 @@ Player player;
 // 오브젝트들
 vector<Object*> objects;
 
+//화면
 CImage screen;
+GLuint windowWidth{ 800 };
+GLuint windowHeight{ 800 };
+bool full{};
 
 // 초기화
 void init();
 
 // gl 변수
 GLclampf g_color[4] = { 0.f, 0.f, 0.f, 1.f };
-GLuint windowWidth = BACK_WIDTH;
-GLuint windowHeight = BACK_HEIGHT;
+
 
 // gl 함수
 GLvoid drawScene(GLvoid);
@@ -101,7 +104,7 @@ GLvoid drawScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
 
-	glViewport(0, 0, BACK_WIDTH, BACK_HEIGHT);
+	glViewport(0, 0, windowWidth, windowHeight);
 
 	// Camera
 	camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
@@ -118,7 +121,9 @@ GLvoid drawScene()
 
 GLvoid Reshape(int w, int h)
 {
-	glViewport(0, 0, BACK_WIDTH, BACK_HEIGHT);
+	windowWidth = w;
+	windowHeight = h;
+	glViewport(0, 0, windowWidth, windowHeight);
 }
 
 GLvoid keyboard(unsigned char key, int x, int y)
@@ -160,6 +165,15 @@ GLvoid keyboard(unsigned char key, int x, int y)
 	case 'q':
 		exit(-1);
 		break;
+	case 'f':			
+		glutFullScreenToggle();
+
+		if (not full)
+			full = true;
+		else
+			full = false;
+
+		break;
 
 	case '[':
 		if (1 == screen.status) {
@@ -191,30 +205,32 @@ GLvoid Mouse(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON)
 	{
-		//play
-		//x 513 616
-		//y 528 583
-
-		//exit
-		//x 507 603
-		//y 595 648
-
-		//settings
-		//x 505 673
-		//y 663 711
-
 		/*cout << "x : " << x << endl;
 		cout << "y : " << y << endl << endl << endl;*/
 
-		if (513 <= x && 616 >= x and 528 <= y && 583 >= y) {
-			screen.status = 1;
-			screen.initTexture();
-			PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		if (not full) {
+			if (513 <= x && 616 >= x and 528 <= y && 583 >= y) {//play
+				screen.status = 1;
+				screen.initTexture();
+				PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+			}
+			else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)//exit
+				exit(-1);
+			else if (505 <= x && 673 >= x and 663 <= y && 711 >= y) {//settings
+
+			}
 		}
-		else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)
-			exit(-1);
-		else if (505 <= x && 673 >= x and 663 <= y && 711 >= y) {
-			
+		else {
+			if (1242 <= x && 1490 >= x and 719 <= y && 786 >= y) {//play
+				screen.status = 1;
+				screen.initTexture();
+				PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+			}
+			else if (1228 <= x && 1446 >= x and 807 <= y && 873 >= y)//exit
+				exit(-1);
+			else if (1216 <= x && 1618 >= x and 899 <= y && 957 >= y) {//settings
+
+			}
 		}
 	}
 }
@@ -239,6 +255,8 @@ void init()
 
 void initCamera()
 {
+	camera.setWinSize(windowWidth, windowHeight);
+
 	camera.setFovy(45.0f);
 	camera.setzNear(0.1f);
 	camera.setzFar(50.0f);

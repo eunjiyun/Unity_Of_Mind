@@ -1,6 +1,7 @@
 #include "camera.h"
 
 // Camera defualt constructor
+
 Camera::Camera()
 {
 	pitch = 0.f;
@@ -12,8 +13,8 @@ Camera::Camera()
 	up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	fovy = 45.0f;
-	//aspect = 800.0f / 800.0f;
-	aspect = BACK_WIDTH / BACK_HEIGHT;
+	aspect = 800.0f / 800.0f;
+	//aspect = winW / winH;
 
 	zNear = 0.1f;
 	zFar = 100.0f;
@@ -75,6 +76,12 @@ void Camera::setCamera(GLuint shaderProgramID, int type, CameraMode c, glm::vec3
 	{
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "projection"), 1, GL_FALSE, glm::value_ptr(ortho));
 	}
+}
+
+void Camera::setWinSize(float w, float h)
+{
+	winW = w;
+	winH = h;
 }
 
 void Camera::moveLeft()

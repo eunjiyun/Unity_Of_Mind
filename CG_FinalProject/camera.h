@@ -36,6 +36,8 @@ private:
 	float zNear;
 	float zFar;
 
+	float winW, winH;
+
 public:
 	Camera();
 
@@ -66,6 +68,8 @@ public:
 	void setTop(float top);
 
 	void setCamera(GLuint shaderProgramID, int type, CameraMode, glm::vec3); // 0: Perspective, 1: Ortho
+
+	void setWinSize(float, float);
 
 	void moveLeft();
 	void moveRight();

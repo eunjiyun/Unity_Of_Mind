@@ -30,6 +30,5 @@
 using namespace std;
 using namespace glm;
 
-#define BACK_WIDTH 800
-#define BACK_HEIGHT 800
+
 
