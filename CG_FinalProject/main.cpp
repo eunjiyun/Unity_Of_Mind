@@ -213,6 +213,10 @@ GLvoid Mouse(int button, int state, int x, int y)
 				screen.status = 1;
 				screen.initTexture();
 				PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+
+				// 마우스 커서 숨기기
+				ShowCursor(FALSE);
+
 			}
 			else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)//exit
 				exit(-1);
@@ -225,6 +229,9 @@ GLvoid Mouse(int button, int state, int x, int y)
 				screen.status = 1;
 				screen.initTexture();
 				PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+
+				// 마우스 커서 숨기기
+				ShowCursor(FALSE);
 			}
 			else if (1228 <= x && 1446 >= x and 807 <= y && 873 >= y)//exit
 				exit(-1);
@@ -241,6 +248,8 @@ void init()
 	initCamera();
 
 	base.init();
+	base.initBuffer();
+	base.initTexture();
 	objects.push_back(&base);
 
 	wall.init();
