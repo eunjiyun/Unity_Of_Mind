@@ -41,8 +41,10 @@ GLclampf g_color[4] = { 0.f, 0.f, 0.f, 1.f };
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 GLvoid keyboard(unsigned char key, int x, int y);
+GLvoid KeyboardSpecial(int, int, int);
 GLvoid Mouse(int button, int state, int x, int y);
 GLvoid update(int value);
+
 
 // shader 변수
 GLuint shaderProgramID;
@@ -54,7 +56,9 @@ glm::mat4 projection;
 void wallUpdate();
 int wallUpdateSpeed = 20;
 
-
+//충돌
+bool crashOnce{};
+bool plSizeChange{};
 
 void main(int argc, char** argv)
 {
@@ -62,7 +66,7 @@ void main(int argc, char** argv)
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(500, 100);
 	glutInitWindowSize(windowWidth, windowHeight);
 
 	glutCreateWindow("Unity of Mind");
@@ -94,6 +98,7 @@ void main(int argc, char** argv)
 	glutDisplayFunc(drawScene);
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(keyboard);
+	glutSpecialFunc(KeyboardSpecial);
 	glutMouseFunc(Mouse);
 	glutMainLoop();
 }
@@ -112,7 +117,7 @@ GLvoid drawScene()
 	screen.render(shaderProgramID);
 
 	// Object Draw
-	if(1==screen.status)
+	if (1 == screen.status)
 		for (int i = 0; i < objects.size(); ++i)
 			(*objects[i]).render(shaderProgramID);
 
@@ -130,31 +135,23 @@ GLvoid keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case 'a': // 왼쪽 이동
-		player.moveLeft();
-
-		if (FIRST_PERSON == cameraMode)
-			camera.moveLeft();
-		break;
-	case 'd': // 오른쪽 이동
-		player.moveRight();
-
-		if (FIRST_PERSON == cameraMode)
-			camera.moveRight();
-		break;
-	case 'r': // 플레이어 빨간색 변경
+	case 'z': // 플레이어 빨간색 변경
 		player.changeRed();
 		break;
-	case 'g': // 플레이어 초록색 변경
+	case 'x': // 플레이어 초록색 변경
 		player.changeGreen();
 		break;
-	case 'b': // 플레이어 파란색 변경
+	case 'c': // 플레이어 파란색 변경
 		player.changeBlue();
 		break;
-	case 's': // 플레이어 축소 / 확대
+	case 'v': // 플레이어 축소 / 확대
 		player.changeSize();
-		break;
 
+		if (not plSizeChange)
+			plSizeChange = true;
+		else
+			plSizeChange = false;
+		break;
 	case '1':
 		cameraMode = FIRST_PERSON;
 		camera.setEye(glm::vec3(player.getPos().x, camera.getEye().y, camera.getEye().z));
@@ -162,30 +159,26 @@ GLvoid keyboard(unsigned char key, int x, int y)
 	case '3':
 		cameraMode = THIRD_PERSON;
 		break;
-	case 'q':
+
+	case 27://esc : 프로그램 종료
 		exit(-1);
-		break;
-	case 'f':			
-		glutFullScreenToggle();
-
-		if (not full)
-			full = true;
-		else
-			full = false;
-
 		break;
 
 	case '[':
+
 		if (1 == screen.status) {
 			screen.status = 2;
+
 			PlaySound(L"win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 		}
 		else if (2 == screen.status) {
 			screen.status = 3;
+
 			PlaySound(L"closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 		}
 		else if (3 == screen.status) {
 			screen.status = 1;
+
 			PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 		}
 
@@ -200,6 +193,36 @@ GLvoid keyboard(unsigned char key, int x, int y)
 
 	glutPostRedisplay();
 }
+GLvoid KeyboardSpecial(int key, int x, int y)
+{
+	switch (key) {
+	case GLUT_KEY_LEFT:
+		// 왼쪽 화살표 키 처리
+		player.moveLeft();
+
+		if (FIRST_PERSON == cameraMode)
+			camera.moveLeft();
+		break;
+	case GLUT_KEY_RIGHT:
+		// 오른쪽 화살표 키 처리
+		player.moveRight();
+
+		if (FIRST_PERSON == cameraMode)
+			camera.moveRight();
+		break;
+
+	case GLUT_KEY_CTRL_L:
+	case GLUT_KEY_CTRL_R://전체 화면
+		// Ctrl 키 처리
+		glutFullScreenToggle();
+
+		if (not full)
+			full = true;
+		else
+			full = false;
+		break;
+	}
+}
 
 GLvoid Mouse(int button, int state, int x, int y)
 {
@@ -208,35 +231,37 @@ GLvoid Mouse(int button, int state, int x, int y)
 		/*cout << "x : " << x << endl;
 		cout << "y : " << y << endl << endl << endl;*/
 
-		if (not full) {
-			if (513 <= x && 616 >= x and 528 <= y && 583 >= y) {//play
-				screen.status = 1;
-				screen.initTexture();
-				PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		if (0 == screen.status) {
+			if (not full) {
+				if (513 <= x && 616 >= x and 528 <= y && 583 >= y) {//play
+					screen.status = 1;
+					screen.initTexture();
+					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 
-				// 마우스 커서 숨기기
-				ShowCursor(FALSE);
+					// 마우스 커서 숨기기
+					ShowCursor(FALSE);
 
+				}
+				else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)//exit
+					exit(-1);
+				else if (505 <= x && 673 >= x and 663 <= y && 711 >= y) {//settings
+
+				}
 			}
-			else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)//exit
-				exit(-1);
-			else if (505 <= x && 673 >= x and 663 <= y && 711 >= y) {//settings
+			else {
+				if (1242 <= x && 1490 >= x and 719 <= y && 786 >= y) {//play
+					screen.status = 1;
+					screen.initTexture();
+					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 
-			}
-		}
-		else {
-			if (1242 <= x && 1490 >= x and 719 <= y && 786 >= y) {//play
-				screen.status = 1;
-				screen.initTexture();
-				PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+					// 마우스 커서 숨기기
+					ShowCursor(FALSE);
+				}
+				else if (1228 <= x && 1446 >= x and 807 <= y && 873 >= y)//exit
+					exit(-1);
+				else if (1216 <= x && 1618 >= x and 899 <= y && 957 >= y) {//settings
 
-				// 마우스 커서 숨기기
-				ShowCursor(FALSE);
-			}
-			else if (1228 <= x && 1446 >= x and 807 <= y && 873 >= y)//exit
-				exit(-1);
-			else if (1216 <= x && 1618 >= x and 899 <= y && 957 >= y) {//settings
-
+				}
 			}
 		}
 	}
@@ -284,7 +309,9 @@ void initCamera()
 
 GLvoid update(int value)
 {
-	wallUpdate();
+	if (1 == screen.status)
+		wallUpdate();
+
 	glutTimerFunc(wallUpdateSpeed, update, value);
 	glutPostRedisplay();
 }
@@ -292,7 +319,97 @@ GLvoid update(int value)
 void wallUpdate()
 {
 	wall.moveWall();
+
+	if (30 == wall.cur_idx) {
+		screen.status = 2;
+		PlaySound(L"win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+
+		player.init();
+		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
+		screen.initTexture();
+	}
+	else if (3 == wall.crashCnt) {
+		screen.status = 3;
+
+		PlaySound(L"closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+
+		player.init();
+		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
+		screen.initTexture();
+	}
+
+	if (not wall.emptyIdx.empty()) {
+		if (not crashOnce and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+			for (int i{}; i < wall.emptyIdx.size(); ++i) {
+				if (player.getPos().x >= wall.emptyIdx[i].y * 0.3333f - 0.5f
+					and player.getPos().x + 0.05f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f
+
+					/*or 0.05f > wall.emptyIdx[i].y * 0.3333f - 0.5f - player.getPos().x
+					or 0.05f > player.getPos().x + 0.05f - (wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)*/) {
+
+					if (0 == (wall.cur_idx - 1) / 10) {
+
+						++wall.crashCnt;
+						crashOnce = true;
+
+						cout << "1 crash : " << wall.crashCnt << endl;
+						cout << "1 size : " << wall.emptyIdx.size() << endl;
+						break;
+					}
+					else if (1 == (wall.cur_idx - 1) / 10) {
+						if (not(1 == player.getColor().x and 0 == wall.emptyIdx[i].x
+							or 1 == player.getColor().y and 1 == wall.emptyIdx[i].x
+							or 1 == player.getColor().z and 2 == wall.emptyIdx[i].x)) {
+
+							++wall.crashCnt;
+							crashOnce = true;
+
+							cout << "2 crash : " << wall.crashCnt << endl;
+							cout << "2 size : " << wall.emptyIdx.size() << endl;
+							break;
+						}
+						else {
+							//cout << "2 color x" << endl << endl;
+						}
+					}
+					else if (2 == (wall.cur_idx - 1) / 10) {
+						if (0 == wall.emptyIdx[i].x and not plSizeChange
+							or 1 == wall.emptyIdx[i].x) {
+
+							++wall.crashCnt;
+							crashOnce = true;
+
+							cout << "3 crash : " << wall.crashCnt << endl;
+							cout << "3 size : " << wall.emptyIdx.size() << endl;
+							break;
+						}
+						else {
+							//cout << "3 size x" << endl << endl;
+						}
+					}
+				}
+				else if (0 == (wall.cur_idx - 1) / 10) {
+					//cout << "1 pos x : " << endl << endl;
+				}
+				else if (1 == (wall.cur_idx - 1) / 10) {
+					//cout << "2 pos x : " << endl << endl;
+				}
+				else if (2 == (wall.cur_idx - 1) / 10) {
+					//cout << "3 pos x : " << endl << endl;
+				}
+			}
+		}
+	}
+
+	if (not wall.emptyIdx.empty() and 1.7f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+		crashOnce = false;
+
+		//if (not wall.emptyIdx.empty())
+			wall.emptyIdx.clear();
+	}
 }
+
+
 
 
 
