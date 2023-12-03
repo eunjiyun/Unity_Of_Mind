@@ -1,16 +1,11 @@
 #include "stdafx.h"
 #include "shaders.h"
-#include "camera.h"
 #include "object.h"
 #include "base.h"
 #include "wall.h"
 #include "player.h"
 #include "Image.h"
-
-// 카메라
-Camera camera;
-void initCamera();
-CameraMode cameraMode = THIRD_PERSON;
+#include "Light.h"
 
 // 바닥
 Base base;
@@ -24,12 +19,25 @@ Player player;
 // 오브젝트들
 vector<Object*> objects;
 
+
+// 카메라
+Camera camera;
+void initCamera();
+CameraMode cameraMode = THIRD_PERSON;
+
 //화면
 CImage screen;
 GLuint windowWidth{ 800 };
 GLuint windowHeight{ 800 };
 bool full{};
 bool hpBarSet[2]{};
+
+//충돌
+bool crashOnce{};
+bool plSizeChange{};
+
+//조명
+CLight light;
 
 // 초기화
 void init();
@@ -57,9 +65,8 @@ glm::mat4 projection;
 void wallUpdate();
 int wallUpdateSpeed = 20;
 
-//충돌
-bool crashOnce{};
-bool plSizeChange{};
+
+
 
 void main(int argc, char** argv)
 {
@@ -94,6 +101,7 @@ void main(int argc, char** argv)
 
 	// 초기화
 	init();
+
 
 	glutTimerFunc(wallUpdateSpeed, update, 50);
 	glutDisplayFunc(drawScene);
@@ -286,6 +294,8 @@ void init()
 
 	screen.initBuffer();
 	screen.initTexture();
+
+	light.InitBuffer(shaderProgramID, camera);
 }
 
 void initCamera()

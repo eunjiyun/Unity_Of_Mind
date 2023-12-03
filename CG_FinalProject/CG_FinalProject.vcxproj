@@ -132,6 +132,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="FileIn.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="shaders.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="FileIn.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="player.cpp" />
