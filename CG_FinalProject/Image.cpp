@@ -81,11 +81,15 @@ void CImage::initTexture()
     if (0 == status)
         data = stbi_load("start.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
     else if (1 == status)
-        data = stbi_load("back.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+        data = stbi_load("b.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
     else if(2==status)
         data = stbi_load("win.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
-    else 
+    else if(3==status)
         data = stbi_load("over.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+    else if (4 == status)
+        data = stbi_load("b2.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+    else 
+        data = stbi_load("b3.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
 
     glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 

@@ -29,6 +29,7 @@ CImage screen;
 GLuint windowWidth{ 800 };
 GLuint windowHeight{ 800 };
 bool full{};
+bool hpBarSet[2]{};
 
 // 초기화
 void init();
@@ -117,7 +118,7 @@ GLvoid drawScene()
 	screen.render(shaderProgramID);
 
 	// Object Draw
-	if (1 == screen.status)
+	if (1 == screen.status or 4 == screen.status or 5 == screen.status)
 		for (int i = 0; i < objects.size(); ++i)
 			(*objects[i]).render(shaderProgramID);
 
@@ -166,7 +167,7 @@ GLvoid keyboard(unsigned char key, int x, int y)
 
 	case '[':
 
-		if (1 == screen.status) {
+		if (1 == screen.status or 4 == screen.status or 5== screen.status) {
 			screen.status = 2;
 
 			PlaySound(L"win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
@@ -309,7 +310,7 @@ void initCamera()
 
 GLvoid update(int value)
 {
-	if (1 == screen.status)
+	if (1 == screen.status or 4 == screen.status or 5 == screen.status)
 		wallUpdate();
 
 	glutTimerFunc(wallUpdateSpeed, update, value);
@@ -319,6 +320,7 @@ GLvoid update(int value)
 void wallUpdate()
 {
 	wall.moveWall();
+	
 
 	if (30 == wall.cur_idx) {
 		screen.status = 2;
@@ -336,6 +338,16 @@ void wallUpdate()
 		player.init();
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
 		screen.initTexture();
+	}
+	else if (2 == wall.crashCnt and !hpBarSet[1]) {
+		screen.status = 5;
+		screen.initTexture();
+		hpBarSet[1] = true;
+	}
+	else if (1 == wall.crashCnt and !hpBarSet[0]) {
+		screen.status = 4;
+		screen.initTexture();
+		hpBarSet[0] = true;
 	}
 
 	if (not wall.emptyIdx.empty()) {
