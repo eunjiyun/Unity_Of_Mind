@@ -4,31 +4,30 @@
 
 CImage::CImage()
 {
-    const vector<float>& temp = {
+    const vector<float>& temp{ {
         1, 0, -10, 0, 0, 1, 0, 1,
         1, 1, -10, 0, 0, 1, 0, 0,
         0, 1, -10, 0, 0, 1, 1, 0,
         1, 0, -10, 0, 0, 1, 0, 1,
         0, 1, -10, 0, 0, 1, 1, 0,
-        0, 0, -10, 0, 0, 1, 1, 1 };
+        0, 0, -10, 0, 0, 1, 1, 1 } };
 
-    for (int i = 0; i < temp.size(); i += 8)
-    {
-        vertices.push_back(glm::vec3(temp[i], temp[i + 1], temp[i + 2]));
-        normals.push_back(glm::vec3(temp[i + 3], temp[i + 4], temp[i + 5]));
-        uvs.push_back(glm::vec2(temp[i + 6], temp[i + 7]));
+    for (int i{}; i < temp.size(); i += 8){
+        vertices.push_back(vec3(temp[i], temp[i + 1], temp[i + 2]));
+        normals.push_back(vec3(temp[i + 3], temp[i + 4], temp[i + 5]));
+        uvs.push_back(vec2(temp[i + 6], temp[i + 7]));
     }
     initPos();
-    pos = glm::vec3(-25, -25, 0);
-    scale = glm::vec3(50, 50, 1);
+    pos = vec3(-25, -25, 0);
+    scale = vec3(50, 50, 1);
 }
 
 void CImage::render(GLuint ID)
 {
     glUseProgram(ID);
 
-    model = glm::mat4(1.0);
-    model = glm::translate(model, pos);
+    model = mat4(1.0);
+    model = translate(model, pos);
     model = glm::scale(model, scale);
 
     glUniformMatrix4fv(glGetUniformLocation(ID, "model"), 1, GL_FALSE, glm::value_ptr(model));

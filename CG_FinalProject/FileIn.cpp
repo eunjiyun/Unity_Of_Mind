@@ -7,46 +7,40 @@ int CFileIn::loadObj(const char* fileName)
 
     fopen_s(&objFile, fileName, "rb");
 
-    if (objFile == NULL)
-    {
-        printf("Impossible to open the file !\n");
+    if (objFile == NULL){
+        cout << "error" << endl;
         return false;
     }
 
-    while (1)
-    {
+    while (true){
         char lineHeader[65535];
 
-        int res = fscanf(objFile, "%s", lineHeader);
-        if (res == EOF)
+        int res{ fscanf(objFile, "%s", lineHeader) };
+        if (EOF==res)
             break;
 
-        if (strcmp(lineHeader, "v") == 0)
-        {
-            glm::vec3 vertex;
+        if (0==strcmp(lineHeader, "v") ){
+            vec3 vertex;
             fscanf(objFile, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
             temp_vertices.push_back(vertex);
         }
-        else if (strcmp(lineHeader, "vt") == 0)
-        {
-            glm::vec2 uv;
+        else if (0==strcmp(lineHeader, "vt") ){
+            vec2 uv;
             fscanf(objFile, "%f %f\n", &uv.x, &uv.y);
             temp_uvs.push_back(uv);
         }
-        else if (strcmp(lineHeader, "vn") == 0)
-        {
-            glm::vec3 normal;
+        else if (0==strcmp(lineHeader, "vn") ){
+            vec3 normal;
             fscanf(objFile, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
             temp_normals.push_back(normal);
         }
-        else if (strcmp(lineHeader, "f") == 0)
-        {
-            std::string vertex1, vertex2, vertex3;
+        else if (0==strcmp(lineHeader, "f") ) {
+            string vertex1, vertex2, vertex3;
             unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-            int matches = fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
-            if (matches != 9)
+            int matches{ fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]) };
+            if (9!=matches )
             {
-                printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+                cout << "error" << endl;
                 assert(false);
                 return false;
             }
@@ -61,22 +55,19 @@ int CFileIn::loadObj(const char* fileName)
             normalIndices.push_back(normalIndex[2]);
         }
 
-        for (unsigned int i = 0; i < vertexIndices.size(); i++)
-        {
-            unsigned int vertexIndex = vertexIndices[i];
-            glm::vec3 vertex = temp_vertices[vertexIndex - 1];
+        for (unsigned int i{}; i < vertexIndices.size(); ++i){
+            unsigned int vertexIndex{ vertexIndices[i] };
+            vec3 vertex{ temp_vertices[vertexIndex - 1] };
             out_vertices.push_back(vertex);
         }
-        for (unsigned int i = 0; i < uvIndices.size(); i++)
-        {
-            unsigned int uvIndex = uvIndices[i];
-            glm::vec2 uv = temp_uvs[uvIndex - 1];
+        for (unsigned int i{}; i < uvIndices.size(); ++i){
+            unsigned int uvIndex{ uvIndices[i] };
+            vec2 uv{ temp_uvs[uvIndex - 1] };
             out_uvs.push_back(uv);
         }
-        for (unsigned int i = 0; i < normalIndices.size(); i++)
-        {
-            unsigned int normalIndex = normalIndices[i];
-            glm::vec3 normal = temp_normals[normalIndex - 1];
+        for (unsigned int i{}; i < normalIndices.size(); ++i){
+            unsigned int normalIndex{ normalIndices[i] };
+            vec3 normal{ temp_normals[normalIndex - 1] };
             out_normals.push_back(normal);
         }
     }

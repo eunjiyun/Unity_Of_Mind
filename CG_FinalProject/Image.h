@@ -5,16 +5,17 @@ class CImage : public Object
 {
 public:
     GLint object;
-    vector<glm::vec3> vertices;
-    vector<glm::vec3> normals;
-    vector<glm::vec2> uvs;
+    vector<vec3> vertices;
+    vector<vec3> normals;
+    vector<vec2> uvs;
 
     GLuint textureID;
     int status{0};
+
 public:
     CImage();
-    void render(GLuint shaderProgramID) /*override*/;
-    void initTexture() /*override*/;
-    void initBuffer() /*override*/;
+    void render(GLuint) ;
+    void initTexture() ;
+    void initBuffer() ;
 };
 

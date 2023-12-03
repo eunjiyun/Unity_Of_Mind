@@ -23,7 +23,7 @@ vector<Object*> objects;
 // 카메라
 Camera camera;
 void initCamera();
-CameraMode cameraMode = THIRD_PERSON;
+CameraMode cameraMode{ THIRD_PERSON };
 
 //화면
 CImage screen;
@@ -391,7 +391,7 @@ void wallUpdate()
 							break;
 						}
 						else {
-							//cout << "2 color x" << endl << endl;
+							cout << "2 color x" << endl << endl;
 						}
 					}
 					else if (2 == (wall.cur_idx - 1) / 10) {
@@ -406,28 +406,27 @@ void wallUpdate()
 							break;
 						}
 						else {
-							//cout << "3 size x" << endl << endl;
+							cout << "3 size x" << endl << endl;
 						}
 					}
 				}
 				else if (0 == (wall.cur_idx - 1) / 10) {
-					//cout << "1 pos x : " << endl << endl;
+					cout << "1 pos x" << endl << endl;
 				}
 				else if (1 == (wall.cur_idx - 1) / 10) {
-					//cout << "2 pos x : " << endl << endl;
+					cout << "2 pos x" << endl << endl;//
 				}
 				else if (2 == (wall.cur_idx - 1) / 10) {
-					//cout << "3 pos x : " << endl << endl;
+					cout << "3 pos x" << endl << endl;//
 				}
 			}
 		}
 	}
 
-	if (not wall.emptyIdx.empty() and 1.7f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+	if (not wall.emptyIdx.empty() and 1.35f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+		
 		crashOnce = false;
-
-		//if (not wall.emptyIdx.empty())
-			wall.emptyIdx.clear();
+		wall.emptyIdx.clear();
 	}
 }
 
