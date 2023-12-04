@@ -1,11 +1,17 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "shaders.h"
-#include "object.h"
+
+//#include "object.h"
+
 #include "base.h"
 #include "wall.h"
 #include "player.h"
 #include "Image.h"
+
+// "camera.h"
 #include "Light.h"
+
+
 
 // 바닥
 Base base;
@@ -20,10 +26,12 @@ Player player;
 vector<Object*> objects;
 
 
+
 // 카메라
 Camera camera;
 void initCamera();
 CameraMode cameraMode{ THIRD_PERSON };
+
 
 //화면
 CImage screen;
@@ -324,6 +332,7 @@ GLvoid update(int value)
 		wallUpdate();
 
 	glutTimerFunc(wallUpdateSpeed, update, value);
+
 	glutPostRedisplay();
 }
 
@@ -374,8 +383,8 @@ void wallUpdate()
 						++wall.crashCnt;
 						crashOnce = true;
 
-						cout << "1 crash : " << wall.crashCnt << endl;
-						cout << "1 size : " << wall.emptyIdx.size() << endl;
+						//cout << "1 crash : " << wall.crashCnt << endl;
+						//cout << "1 size : " << wall.emptyIdx.size() << endl;
 						break;
 					}
 					else if (1 == (wall.cur_idx - 1) / 10) {
@@ -386,13 +395,13 @@ void wallUpdate()
 							++wall.crashCnt;
 							crashOnce = true;
 
-							cout << "2 crash : " << wall.crashCnt << endl;
-							cout << "2 size : " << wall.emptyIdx.size() << endl;
+							//cout << "2 crash : " << wall.crashCnt << endl;
+							//cout << "2 size : " << wall.emptyIdx.size() << endl;
 							break;
 						}
-						else {
+						/*else {
 							cout << "2 color x" << endl << endl;
-						}
+						}*/
 					}
 					else if (2 == (wall.cur_idx - 1) / 10) {
 						if (0 == wall.emptyIdx[i].x and not plSizeChange
@@ -401,24 +410,24 @@ void wallUpdate()
 							++wall.crashCnt;
 							crashOnce = true;
 
-							cout << "3 crash : " << wall.crashCnt << endl;
-							cout << "3 size : " << wall.emptyIdx.size() << endl;
+							//cout << "3 crash : " << wall.crashCnt << endl;
+							//cout << "3 size : " << wall.emptyIdx.size() << endl;
 							break;
 						}
-						else {
+						/*else {
 							cout << "3 size x" << endl << endl;
-						}
+						}*/
 					}
 				}
-				else if (0 == (wall.cur_idx - 1) / 10) {
-					cout << "1 pos x" << endl << endl;
-				}
-				else if (1 == (wall.cur_idx - 1) / 10) {
-					cout << "2 pos x" << endl << endl;//
-				}
-				else if (2 == (wall.cur_idx - 1) / 10) {
-					cout << "3 pos x" << endl << endl;//
-				}
+				//else if (0 == (wall.cur_idx - 1) / 10) {
+				//	cout << "1 pos x" << endl << endl;
+				//}
+				//else if (1 == (wall.cur_idx - 1) / 10) {
+				//	cout << "2 pos x" << endl << endl;//
+				//}
+				//else if (2 == (wall.cur_idx - 1) / 10) {
+				//	cout << "3 pos x" << endl << endl;//
+				//}
 			}
 		}
 	}

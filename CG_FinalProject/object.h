@@ -25,6 +25,8 @@ protected:
     GLuint tbo;
     CFileIn in;
 public:
+    vector<glm::vec3>normals;
+public:
     Object();
     Object(vector<float> vertices, vector<float> colors);
     Object(vector<float> vertices, vector<float> colors, vector<GLubyte> indices);
