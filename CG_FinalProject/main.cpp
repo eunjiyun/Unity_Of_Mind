@@ -134,9 +134,14 @@ GLvoid drawScene()
 	screen.render(shaderProgramID);
 
 	// Object Draw
-	if (1 == screen.status or 4 == screen.status or 5 == screen.status)
+	if (1 == screen.status or 4 == screen.status or 5 == screen.status) {
+
+		// 마우스 커서 숨기기
+		ShowCursor(FALSE);
+
 		for (int i = 0; i < objects.size(); ++i)
 			(*objects[i]).render(shaderProgramID);
+	}
 
 	glutSwapBuffers();
 }
@@ -254,10 +259,6 @@ GLvoid Mouse(int button, int state, int x, int y)
 					screen.status = 1;
 					screen.initTexture();
 					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
-
-					// 마우스 커서 숨기기
-					ShowCursor(FALSE);
-
 				}
 				else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)//exit
 					exit(-1);
@@ -270,9 +271,6 @@ GLvoid Mouse(int button, int state, int x, int y)
 					screen.status = 1;
 					screen.initTexture();
 					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
-
-					// 마우스 커서 숨기기
-					ShowCursor(FALSE);
 				}
 				else if (1228 <= x && 1446 >= x and 807 <= y && 873 >= y)//exit
 					exit(-1);
