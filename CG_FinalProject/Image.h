@@ -5,17 +5,17 @@ class CImage : public Object
 {
 public:
     GLint object;
-    vector<vec3> vertices;
-    vector<vec3> normals;
-    vector<vec2> uvs;
+    vector<vec3> vert;
+    vector<vec3> norm;
+    vector<vec2> uv;
 
-    GLuint textureID;
+    GLuint texId;
     int status{0};
 
 public:
     CImage();
     void render(GLuint) ;
-    void initTexture() ;
-    void initBuffer() ;
+    void initTex() ;
+    void initBuf() ;
 };
 

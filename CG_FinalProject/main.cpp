@@ -206,7 +206,7 @@ GLvoid keyboard(unsigned char key, int x, int y)
 		player.init();
 		//player.setPos(vec3(0, 0, 0));
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
-		screen.initTexture();
+		screen.initTex();
 
 		break;
 	}
@@ -256,7 +256,7 @@ GLvoid Mouse(int button, int state, int x, int y)
 			if (not full) {
 				if (513 <= x && 616 >= x and 528 <= y && 583 >= y) {//play
 					screen.status = 1;
-					screen.initTexture();
+					screen.initTex();
 					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 				}
 				else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)//exit
@@ -268,7 +268,7 @@ GLvoid Mouse(int button, int state, int x, int y)
 			else {
 				if (1242 <= x && 1490 >= x and 719 <= y && 786 >= y) {//play
 					screen.status = 1;
-					screen.initTexture();
+					screen.initTex();
 					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 				}
 				else if (1228 <= x && 1446 >= x and 807 <= y && 873 >= y)//exit
@@ -297,8 +297,8 @@ void init()
 	player.init();
 	objects.push_back(&player);
 
-	screen.initBuffer();
-	screen.initTexture();
+	screen.initBuf();
+	screen.initTex();
 
 	light.InitBuffer(shaderProgramID, camera);
 }
@@ -344,7 +344,7 @@ void wallUpdate()
 
 		player.init();
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
-		screen.initTexture();
+		screen.initTex();
 	}
 	else if (3 == wall.crashCnt) {
 		screen.status = 3;
@@ -353,16 +353,16 @@ void wallUpdate()
 
 		player.init();
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
-		screen.initTexture();
+		screen.initTex();
 	}
 	else if (2 == wall.crashCnt and !hpBarSet[1]) {
 		screen.status = 5;
-		screen.initTexture();
+		screen.initTex();
 		hpBarSet[1] = true;
 	}
 	else if (1 == wall.crashCnt and !hpBarSet[0]) {
 		screen.status = 4;
-		screen.initTexture();
+		screen.initTex();
 		hpBarSet[0] = true;
 	}
 

@@ -4,7 +4,7 @@
 
 CImage::CImage()
 {
-    const vector<float>& temp{ {
+    const vector<float> first{ {
         1, 0, -10, 0, 0, 1, 0, 1,
         1, 1, -10, 0, 0, 1, 0, 0,
         0, 1, -10, 0, 0, 1, 1, 0,
@@ -12,10 +12,10 @@ CImage::CImage()
         0, 1, -10, 0, 0, 1, 1, 0,
         0, 0, -10, 0, 0, 1, 1, 1 } };
 
-    for (int i{}; i < temp.size(); i += 8){
-        vertices.push_back(vec3(temp[i], temp[i + 1], temp[i + 2]));
-        normals.push_back(vec3(temp[i + 3], temp[i + 4], temp[i + 5]));
-        uvs.push_back(vec2(temp[i + 6], temp[i + 7]));
+    for (int i{}; i < first.size(); i += 8){
+        vert.push_back(vec3(first[i], first[i + 1], first[i + 2]));
+        norm.push_back(vec3(first[i + 3], first[i + 4], first[i + 5]));
+        uv.push_back(vec2(first[i + 6], first[i + 7]));
     }
     initPos();
     pos = vec3(-25, -25, 0);
@@ -34,61 +34,61 @@ void CImage::render(GLuint ID)
    
     glBindVertexArray(vao);
 
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+    glBindTexture(GL_TEXTURE_2D, texId);
+    glDrawArrays(GL_TRIANGLES, 0, vert.size());
 }
 
-void CImage::initBuffer()
+void CImage::initBuf()
 {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vert.size() * sizeof(glm::vec3), &vert[0], GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
 
-    glGenBuffers(1, &nbo);
-    glBindBuffer(GL_ARRAY_BUFFER, nbo);
-    glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+    glGenBuffers(1, &normBo);
+    glBindBuffer(GL_ARRAY_BUFFER, normBo);
+    glBufferData(GL_ARRAY_BUFFER, norm.size() * sizeof(glm::vec3), &norm[0], GL_STATIC_DRAW);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glEnableVertexAttribArray(1);
 
-    glGenBuffers(1, &tbo);
-    glBindBuffer(GL_ARRAY_BUFFER, tbo);
-    glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
+    glGenBuffers(1, &texBo);
+    glBindBuffer(GL_ARRAY_BUFFER, texBo);
+    glBufferData(GL_ARRAY_BUFFER, uv.size() * sizeof(glm::vec2), &uv[0], GL_STATIC_DRAW);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(2);
 }
 
-void CImage::initTexture()
+void CImage::initTex()
 {
-    glGenTextures(1, &textureID);
+    glGenTextures(1, &texId);
 
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, texId);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    int width, height, nrChannels;
+    int width, height, channel;
     unsigned char* data;
 
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, texId);
     //stbi_set_flip_vertically_on_load(true); //--- 이미지가 거꾸로 읽힌다면 추가
 
     if (0 == status)
-        data = stbi_load("start.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+        data = stbi_load("start.jpg", &width, &height, &channel, 0);
     else if (1 == status)
-        data = stbi_load("b.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+        data = stbi_load("b.png", &width, &height, &channel, 0);
     else if(2==status)
-        data = stbi_load("win.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+        data = stbi_load("win.jpg", &width, &height, &channel, 0);
     else if(3==status)
-        data = stbi_load("over.jpg", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+        data = stbi_load("over.jpg", &width, &height, &channel, 0);
     else if (4 == status)
-        data = stbi_load("b2.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+        data = stbi_load("b2.png", &width, &height, &channel, 0);
     else 
-        data = stbi_load("b3.png", &width, &height, &nrChannels, 0);//cyberspace /*snow_village_night*/
+        data = stbi_load("b3.png", &width, &height, &channel, 0);
 
     glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 

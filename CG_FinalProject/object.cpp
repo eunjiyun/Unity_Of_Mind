@@ -5,7 +5,7 @@ Object::Object()
 {
     initPos();
 
-    const vector<float>& t{ {
+    const vector<float> t{ {
       1, 0, -10, 0, 0, 1, 0, 1,
         1, 1, -10, 0, 0, 1, 0, 0,
         0, 1, -10, 0, 0, 1, 1, 0,
@@ -115,8 +115,8 @@ void Object::initBuffer()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
 
-    glGenBuffers(1, &nbo);
-    glBindBuffer(GL_ARRAY_BUFFER, nbo);
+    glGenBuffers(1, &normBo);
+    glBindBuffer(GL_ARRAY_BUFFER, normBo);
     glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glEnableVertexAttribArray(1);

@@ -1,6 +1,6 @@
 #pragma once
-//#include "stdafx.h"
-#include "FileIn.h"
+#include "stdafx.h"
+
 
 typedef class Object
 {
@@ -21,9 +21,9 @@ protected:
 
     glm::mat4 model;
 
-    GLuint nbo;
-    GLuint tbo;
-    CFileIn in;
+    GLuint normBo;
+    GLuint texBo;
+
 public:
     vector<glm::vec3>normals;
 public:
@@ -34,8 +34,7 @@ public:
     virtual void init();
     void initPos();
     void initBuffer();
-    //void initImageBuffer();
-
+   
     void setModelPos(vector<float> vertices);
     void setModelColor(vector<float> colors);
     void setModelIndices(vector<GLubyte> indices);
