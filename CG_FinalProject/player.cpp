@@ -71,7 +71,15 @@ void Player::drawP(GLuint shaderProgramID)
 
     glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), color.r, color.g, color.b);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+    if (crashOnce) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
     glDrawElements(GL_TRIANGLES, CUBE_INDEX_COUNT, GL_UNSIGNED_BYTE, 0);
+   
+    if (crashOnce)
+        glDisable(GL_BLEND);
 }
 
 void Player::moveLeft()

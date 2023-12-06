@@ -41,7 +41,6 @@ bool full{};
 bool hpBarSet[2]{};
 
 //충돌
-bool crashOnce{};
 bool plSizeChange{};
 
 //조명
@@ -368,7 +367,7 @@ void wallUpdate()
 	}
 
 	if (not wall.emptyIdx.empty()) {
-		if (not crashOnce and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+		if (not player.crashOnce and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
 			for (int i{}; i < wall.emptyIdx.size(); ++i) {
 				if (player.getPos().x >= wall.emptyIdx[i].y * 0.3333f - 0.5f
 					and player.getPos().x + 0.05f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f
@@ -379,7 +378,7 @@ void wallUpdate()
 					if (0 == (wall.cur_idx - 1) / 10) {
 
 						++wall.crashCnt;
-						crashOnce = true;
+						player.crashOnce = true;
 
 						//cout << "1 crash : " << wall.crashCnt << endl;
 						//cout << "1 size : " << wall.emptyIdx.size() << endl;
@@ -391,7 +390,7 @@ void wallUpdate()
 							or 1 == player.getColor().z and 2 == wall.emptyIdx[i].x)) {
 
 							++wall.crashCnt;
-							crashOnce = true;
+							player.crashOnce = true;
 
 							//cout << "2 crash : " << wall.crashCnt << endl;
 							//cout << "2 size : " << wall.emptyIdx.size() << endl;
@@ -406,7 +405,7 @@ void wallUpdate()
 							or 1 == wall.emptyIdx[i].x) {
 
 							++wall.crashCnt;
-							crashOnce = true;
+							player.crashOnce = true;
 
 							//cout << "3 crash : " << wall.crashCnt << endl;
 							//cout << "3 size : " << wall.emptyIdx.size() << endl;
@@ -432,7 +431,7 @@ void wallUpdate()
 
 	if (not wall.emptyIdx.empty() and 1.35f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
 		
-		crashOnce = false;
+		player.crashOnce = false;
 		wall.emptyIdx.clear();
 	}
 }

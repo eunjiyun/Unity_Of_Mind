@@ -8,6 +8,8 @@ private:
 	glm::mat4 pModel; // player ¸ðµ¨
 
 	void drawP(GLuint shaderProgramID);
+public:
+	bool crashOnce{};
 
 public :
 

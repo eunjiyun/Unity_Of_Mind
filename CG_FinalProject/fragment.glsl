@@ -48,7 +48,7 @@ void main()
         return;
     }
 
-    fragColor = vec4(result, 1.0);
+    fragColor = vec4(result, 0.5);
 
 	//fragColor=vec4(fColor,1.0);
 }
