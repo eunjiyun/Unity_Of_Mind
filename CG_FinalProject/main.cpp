@@ -8,7 +8,6 @@
 #include "player.h"
 #include "Image.h"
 
-// "camera.h"
 #include "Light.h"
 
 
@@ -93,12 +92,6 @@ void main(int argc, char** argv)
 	}
 	else
 		std::cout << "Game Start!" << std::endl;
-
-	// GLEW 초기화
-	if (glewInit() != GLEW_OK) {
-		std::cerr << "Failed to initialize GLEW" << std::endl;
-		exit(EXIT_FAILURE);
-	}
 
 	glEnable(GL_DEPTH_TEST);
 
