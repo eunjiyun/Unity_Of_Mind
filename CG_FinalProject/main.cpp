@@ -362,11 +362,14 @@ void wallUpdate()
 	if (not wall.emptyIdx.empty()) {
 		if (not player.crashOnce and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
 			for (int i{}; i < wall.emptyIdx.size(); ++i) {
-				if (player.getPos().x >= wall.emptyIdx[i].y * 0.3333f - 0.5f
-					and player.getPos().x + 0.05f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f
+				if ((player.getPos().x-0.7f >= wall.emptyIdx[i].y * 0.3333f - 0.5f
+					and player.getPos().x + 0.03f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl==cube
 
-					/*or 0.05f > wall.emptyIdx[i].y * 0.3333f - 0.5f - player.getPos().x
-					or 0.05f > player.getPos().x + 0.05f - (wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)*/) {
+					or (player.getPos().x+0.03f > wall.emptyIdx[i].y * 0.3333f - 0.5f
+					and player.getPos().x-0.07f<wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl left
+
+					or (player.getPos().x-0.07f < wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f
+					and player.getPos().x+0.03f>wall.emptyIdx[i].y * 0.3333f - 0.5f)) {//pl right
 
 					if (0 == (wall.cur_idx - 1) / 10) {
 
