@@ -1,0 +1,16 @@
+#pragma once
+#include "stdafx.h"
+
+class CFileIn
+{
+public:
+	std::vector< GLubyte> vertexIndices;
+	std::vector<glm::vec3> temp_vertices;
+	std::vector<glm::vec3> temp_normals;
+
+	std::vector<glm::vec3> out_vertices, out_normals;
+
+public:
+	int readObj(const char* fileName);
+};
+

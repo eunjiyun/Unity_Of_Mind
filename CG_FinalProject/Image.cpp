@@ -78,17 +78,17 @@ void CImage::initTex()
     //stbi_set_flip_vertically_on_load(true); //--- 이미지가 거꾸로 읽힌다면 추가
 
     if (0 == status)
-        data = stbi_load("start.jpg", &width, &height, &channel, 0);
+        data = stbi_load("texture/start.jpg", &width, &height, &channel, 0);
     else if (1 == status)
-        data = stbi_load("b.png", &width, &height, &channel, 0);
+        data = stbi_load("texture/b.png", &width, &height, &channel, 0);
     else if(2==status)
-        data = stbi_load("win.jpg", &width, &height, &channel, 0);
+        data = stbi_load("texture/win.jpg", &width, &height, &channel, 0);
     else if(3==status)
-        data = stbi_load("over.jpg", &width, &height, &channel, 0);
+        data = stbi_load("texture/over.jpg", &width, &height, &channel, 0);
     else if (4 == status)
-        data = stbi_load("b2.png", &width, &height, &channel, 0);
+        data = stbi_load("texture/b2.png", &width, &height, &channel, 0);
     else 
-        data = stbi_load("b3.png", &width, &height, &channel, 0);
+        data = stbi_load("texture/b3.png", &width, &height, &channel, 0);
 
     glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 

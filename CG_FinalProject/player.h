@@ -1,5 +1,6 @@
 #pragma once
 #include "object.h"
+#include "FileIn.h"
 
 typedef class Player : public Object
 {
@@ -10,8 +11,9 @@ private:
 	void drawP(GLuint shaderProgramID);
 public:
 	bool crashOnce{};
+	CFileIn in;
 
-public :
+public:
 
 	void init() override;
 	void render(GLuint shaderProgramID) override;
@@ -27,4 +29,6 @@ public :
 
 	// 플레이어 크기 변경
 	void changeSize();
+
+	void initBuf();
 };

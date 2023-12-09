@@ -78,7 +78,7 @@ void Base::initTexture()
 	unsigned char* data;
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	data = stbi_load("floor.png", &width, &height, &nrChannels, 0);
+	data = stbi_load("texture/floor.png", &width, &height, &nrChannels, 0);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	stbi_image_free(data);
 }

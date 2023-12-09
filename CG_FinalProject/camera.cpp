@@ -47,7 +47,7 @@ void Camera::setCamera(GLuint shaderProgramID, int type, CameraMode c, glm::vec3
 
 	if (c == FIRST_PERSON) {
 		eye.y = 0.3;
-		eye.z = 1;
+		eye.z = 1.3f;
 
 		view = glm::lookAt(eye, eye + target, up);
 

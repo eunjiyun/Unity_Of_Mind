@@ -76,7 +76,7 @@ int wallUpdateSpeed = 20;
 
 void main(int argc, char** argv)
 {
-	PlaySound(L"opening.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+	PlaySound(L"sound/opening.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
@@ -183,17 +183,17 @@ GLvoid keyboard(unsigned char key, int x, int y)
 		if (1 == screen.status or 4 == screen.status or 5== screen.status) {
 			screen.status = 2;
 
-			PlaySound(L"win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+			PlaySound(L"sound/win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 		}
 		else if (2 == screen.status) {
 			screen.status = 3;
 
-			PlaySound(L"closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+			PlaySound(L"sound/closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 		}
 		else if (3 == screen.status) {
 			screen.status = 1;
 
-			PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+			PlaySound(L"sound/inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 		}
 
 		player.init();
@@ -250,7 +250,7 @@ GLvoid Mouse(int button, int state, int x, int y)
 				if (513 <= x && 616 >= x and 528 <= y && 583 >= y) {//play
 					screen.status = 1;
 					screen.initTex();
-					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+					PlaySound(L"sound/inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 				}
 				else if (507 <= x && 603 >= x and 595 <= y && 648 >= y)//exit
 					exit(-1);
@@ -262,7 +262,7 @@ GLvoid Mouse(int button, int state, int x, int y)
 				if (1242 <= x && 1490 >= x and 719 <= y && 786 >= y) {//play
 					screen.status = 1;
 					screen.initTex();
-					PlaySound(L"inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+					PlaySound(L"sound/inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 				}
 				else if (1228 <= x && 1446 >= x and 807 <= y && 873 >= y)//exit
 					exit(-1);
@@ -333,7 +333,7 @@ void wallUpdate()
 
 	if (30 == wall.cur_idx) {
 		screen.status = 2;
-		PlaySound(L"win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		PlaySound(L"sound/win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 
 		player.init();
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
@@ -342,7 +342,7 @@ void wallUpdate()
 	else if (3 == wall.crashCnt) {
 		screen.status = 3;
 
-		PlaySound(L"closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
+		PlaySound(L"sound/closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 
 		player.init();
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
@@ -360,16 +360,13 @@ void wallUpdate()
 	}
 
 	if (not wall.emptyIdx.empty()) {
-		if (not player.crashOnce and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+		if (not player.crashOnce and 1.25f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
 			for (int i{}; i < wall.emptyIdx.size(); ++i) {
-				if ((player.getPos().x-0.7f >= wall.emptyIdx[i].y * 0.3333f - 0.5f
-					and player.getPos().x + 0.03f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl==cube
+				if ((player.getPos().x/*-0.01f*/ >= wall.emptyIdx[i].y * 0.3333f - 0.5f
+					and player.getPos().x + 0.13f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl==cube
 
-					or (player.getPos().x+0.03f > wall.emptyIdx[i].y * 0.3333f - 0.5f
-					and player.getPos().x-0.07f<wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl left
-
-					or (player.getPos().x-0.07f < wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f
-					and player.getPos().x+0.03f>wall.emptyIdx[i].y * 0.3333f - 0.5f)) {//pl right
+					or (player.getPos().x+0.13f > wall.emptyIdx[i].y * 0.3333f - 0.5f
+					and player.getPos().x/*-0.01f*/<wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)) {
 
 					if (0 == (wall.cur_idx - 1) / 10) {
 
@@ -425,7 +422,7 @@ void wallUpdate()
 		}
 	}
 
-	if (not wall.emptyIdx.empty() and 1.35f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+	if (not wall.emptyIdx.empty() and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
 		
 		player.crashOnce = false;
 		wall.emptyIdx.clear();
