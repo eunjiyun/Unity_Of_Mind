@@ -19,7 +19,7 @@ Base base;
 Wall wall;
 
 // 플레이어
-Player player;
+Player player[5];
 
 // 오브젝트들
 vector<Object*> objects;
@@ -121,7 +121,7 @@ GLvoid drawScene()
 	glViewport(0, 0, windowWidth, windowHeight);
 
 	// Camera
-	camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
+	camera.setCamera(shaderProgramID, 0, cameraMode, player[0].getPos());
 
 	screen.render(shaderProgramID);
 
@@ -150,16 +150,20 @@ GLvoid keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'z': // 플레이어 빨간색 변경
-		player.changeRed();
+		for(int i{};i<5;++i)
+			player[i].changeRed();
 		break;
 	case 'x': // 플레이어 초록색 변경
-		player.changeGreen();
+		for (int i{}; i < 5; ++i)
+		player[i].changeGreen();
 		break;
 	case 'c': // 플레이어 파란색 변경
-		player.changeBlue();
+		for (int i{}; i < 5; ++i)
+		player[i].changeBlue();
 		break;
 	case 'v': // 플레이어 축소 / 확대
-		player.changeSize();
+		for (int i{}; i < 5; ++i)
+		player[i].changeSize();
 
 		if (not plSizeChange)
 			plSizeChange = true;
@@ -168,7 +172,7 @@ GLvoid keyboard(unsigned char key, int x, int y)
 		break;
 	case '1':
 		cameraMode = FIRST_PERSON;
-		camera.setEye(glm::vec3(player.getPos().x, camera.getEye().y, camera.getEye().z));
+		camera.setEye(glm::vec3(player[0].getPos().x, camera.getEye().y, camera.getEye().z));
 		break;
 	case '3':
 		cameraMode = THIRD_PERSON;
@@ -195,10 +199,10 @@ GLvoid keyboard(unsigned char key, int x, int y)
 
 			PlaySound(L"sound/inGame.wav", NULL, SND_ASYNC | SND_LOOP);//sound
 		}
-
-		player.init();
+		for (int i{}; i < 5; ++i)
+		player[i].init(i);
 		//player.setPos(vec3(0, 0, 0));
-		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
+		camera.setCamera(shaderProgramID, 0, cameraMode, player[0].getPos());
 		screen.initTex();
 
 		break;
@@ -212,14 +216,16 @@ GLvoid KeyboardSpecial(int key, int x, int y)
 	switch (key) {
 	case GLUT_KEY_LEFT:
 		// 왼쪽 화살표 키 처리
-		player.moveLeft();
+		for (int i{}; i < 5; ++i)
+		player[i].moveLeft();
 
 		if (FIRST_PERSON == cameraMode)
 			camera.moveLeft();
 		break;
 	case GLUT_KEY_RIGHT:
 		// 오른쪽 화살표 키 처리
-		player.moveRight();
+		for (int i{}; i < 5; ++i)
+		player[i].moveRight();
 
 		if (FIRST_PERSON == cameraMode)
 			camera.moveRight();
@@ -286,9 +292,12 @@ void init()
 
 	wall.init();
 	objects.push_back(&wall);
+	for (int i{}; i < 5; ++i)
+	{
+		player[i].init(i);
 
-	player.init();
-	objects.push_back(&player);
+		objects.push_back(&player[i]);
+	}
 
 	screen.initBuf();
 	screen.initTex();
@@ -334,18 +343,18 @@ void wallUpdate()
 	if (30 == wall.cur_idx) {
 		screen.status = 2;
 		PlaySound(L"sound/win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
-
-		player.init();
-		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
+		for (int i{}; i < 5; ++i)
+		player[i].init(i);
+		camera.setCamera(shaderProgramID, 0, cameraMode, player[0].getPos());
 		screen.initTex();
 	}
 	else if (3 == wall.crashCnt) {
 		screen.status = 3;
 
 		PlaySound(L"sound/closing.wav", NULL, SND_ASYNC | SND_LOOP);//sound
-
-		player.init();
-		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
+		for (int i{}; i < 5; ++i)
+		player[i].init(i);
+		camera.setCamera(shaderProgramID, 0, cameraMode, player[0].getPos());
 		screen.initTex();
 	}
 	else if (2 == wall.crashCnt and !hpBarSet[1]) {
@@ -360,30 +369,30 @@ void wallUpdate()
 	}
 
 	if (not wall.emptyIdx.empty()) {
-		if (not player.crashOnce and 1.25f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
+		if (not player[0].crashOnce and 1.25f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
 			for (int i{}; i < wall.emptyIdx.size(); ++i) {
-				if ((player.getPos().x/*-0.01f*/ >= wall.emptyIdx[i].y * 0.3333f - 0.5f
-					and player.getPos().x + 0.13f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl==cube
+				if ((player[0].getPos().x/*-0.01f*/ >= wall.emptyIdx[i].y * 0.3333f - 0.5f
+					and player[0].getPos().x + 0.13f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl==cube
 
-					or (player.getPos().x+0.13f > wall.emptyIdx[i].y * 0.3333f - 0.5f
-					and player.getPos().x/*-0.01f*/<wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)) {
+					or (player[0].getPos().x+0.13f > wall.emptyIdx[i].y * 0.3333f - 0.5f
+					and player[0].getPos().x/*-0.01f*/<wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)) {
 
 					if (0 == (wall.cur_idx - 1) / 10) {
 
 						++wall.crashCnt;
-						player.crashOnce = true;
+						player[0].crashOnce = true;
 
 						//cout << "1 crash : " << wall.crashCnt << endl;
 						//cout << "1 size : " << wall.emptyIdx.size() << endl;
 						break;
 					}
 					else if (1 == (wall.cur_idx - 1) / 10) {
-						if (not(1 == player.getColor().x and 0 == wall.emptyIdx[i].x
-							or 1 == player.getColor().y and 1 == wall.emptyIdx[i].x
-							or 1 == player.getColor().z and 2 == wall.emptyIdx[i].x)) {
+						if (not(1 == player[0].getColor().x and 0 == wall.emptyIdx[i].x
+							or 1 == player[0].getColor().y and 1 == wall.emptyIdx[i].x
+							or 1 == player[0].getColor().z and 2 == wall.emptyIdx[i].x)) {
 
 							++wall.crashCnt;
-							player.crashOnce = true;
+							player[0].crashOnce = true;
 
 							//cout << "2 crash : " << wall.crashCnt << endl;
 							//cout << "2 size : " << wall.emptyIdx.size() << endl;
@@ -398,7 +407,7 @@ void wallUpdate()
 							or 1 == wall.emptyIdx[i].x) {
 
 							++wall.crashCnt;
-							player.crashOnce = true;
+							player[0].crashOnce = true;
 
 							//cout << "3 crash : " << wall.crashCnt << endl;
 							//cout << "3 size : " << wall.emptyIdx.size() << endl;
@@ -424,7 +433,7 @@ void wallUpdate()
 
 	if (not wall.emptyIdx.empty() and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
 		
-		player.crashOnce = false;
+		player[0].crashOnce = false;
 		wall.emptyIdx.clear();
 	}
 }

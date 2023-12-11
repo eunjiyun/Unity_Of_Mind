@@ -1,7 +1,7 @@
 #include "player.h"
 #define CUBE_INDEX_COUNT 36
 
-void Player::init()
+void Player::init(int id)
 {
 	const vector<float> playerVertices = {
 		-0.1f , 0.0f , 0.8f,
@@ -48,7 +48,16 @@ void Player::init()
 	color = glm::vec3(1.0f, 0.0f, 0.0f);
 	vector<float> pv;
 	vector< GLubyte>pi;
-	in.readObj("fbxToObj/voodoo5.obj");
+	if(0==id)
+		in.readObj("fbxToObj/head.obj");
+	else if(1==id)
+		in.readObj("fbxToObj/left arm.obj");
+	else if (2 == id)
+		in.readObj("fbxToObj/left leg.obj");
+	else if (3 == id)
+		in.readObj("fbxToObj/right arm.obj");
+	else 
+		in.readObj("fbxToObj/right leg.obj");
 
 	for (int i{}; i < in.out_vertices.size(); ++i) {
 		pv.push_back(in.out_vertices[i].x);
@@ -89,8 +98,14 @@ void Player::render(GLuint shaderProgramID)
 	glBindVertexArray(vao);
 
 	model = glm::mat4(1.f);
+	/*model = glm::translate(model, { 0.5f, 0.5f, 0.5f });
+	model = glm::rotate(model, glm::radians(180.f), glm::vec3(0.f, 1.f, 0.f));
+	model = glm::translate(model, { -0.5f, -0.5f, -0.5f });*/
 	model = glm::translate(model, pos);
+	
 	model = glm::scale(model, scale);
+
+	
 
 	drawP(shaderProgramID);
 }

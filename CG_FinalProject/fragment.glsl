@@ -33,7 +33,7 @@ void main()
 	
 	float diffuse = diffuseLight * lc; //--- 산란반사조명값=산란반사값*조명색상값
 
-	float shininess = 128; //--- 광택 계수
+	float shininess = 32; //--- 광택 계수
 	vec3 viewDir = normalize(viewPos-fPos); //--- 관찰자의 방향
 	vec3 reflectDir = reflect(-lightDir, normalVector); //--- 반사 방향: reflect 함수 - 입사 벡터의 반사 방향 계산
 	float specularLight = max (dot (viewDir, reflectDir), 0.0); //--- V와 R의 내적값으로 강도 조절: 음수 방지

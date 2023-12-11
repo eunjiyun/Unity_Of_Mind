@@ -15,7 +15,7 @@ public:
 
 public:
 
-	void init() override;
+	void init(int);
 	void render(GLuint shaderProgramID) override;
 
 	// 플레이어 이동
