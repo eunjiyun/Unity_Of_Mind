@@ -1,15 +1,18 @@
 #include "FileIn.h"
 
-int CFileIn::readObj(const char* fileName)
+int CFileIn::readObj(const char* fileName,int* cnt)
 {
+
 	FILE* objFile;
 	vector<vector<float>> tmp;
 	vector<int> id;
+	int count{};
 
-	fopen_s(&objFile, fileName, "rb");
+	errno_t err = fopen_s(&objFile, fileName, "rb");
 
 	if (NULL == objFile) {
 		cout << "error" << endl;
+		printf("Error opening file. Error code: %d\n", err);
 		return false;
 	}
 
@@ -18,16 +21,28 @@ int CFileIn::readObj(const char* fileName)
 		char lineHeader[65535];
 
 		int res = fscanf(objFile, "%s", lineHeader);
-		if (EOF == res)
+		if (EOF == res) {
+			*cnt = -1;
 			break;
+		}
 
 		if (not strcmp(lineHeader, "v")) {
 			glm::vec3 vertex;
 			fscanf(objFile, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
-			vertex.x /= 200.f;
-			vertex.y /= 200.f;
-			vertex.z /= 200.f;
-			vertex.z += 0.8f;
+
+			if (strcmp(fileName, "fbxToObj/Scene.obj")) {
+				vertex.x /= 200.f;
+				vertex.y /= 200.f;
+				vertex.z /= 200.f;
+				vertex.z += 0.8f;
+			}
+			else {
+				vertex.x /= 1500.f;
+				vertex.y /= 1500.f;
+				vertex.z /= 1500.f;
+				vertex.y -= 1;
+				//vertex.z += 0.8f;
+			}
 
 			temp_vertices.push_back(vertex);
 		}
@@ -40,9 +55,13 @@ int CFileIn::readObj(const char* fileName)
 
 			float vertexIndex[4];
 			vector<float>t;
+			int matches;
 
-			int matches = fscanf(objFile, "%f//%*f %f//%*f %f//%*f %f//%*f", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2], &vertexIndex[3]);
-
+			if(strcmp(fileName, "fbxToObj/Scene.obj"))
+				matches = fscanf(objFile, "%f//%*f %f//%*f %f//%*f %f//%*f", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2], &vertexIndex[3]);
+			else 
+				matches = fscanf(objFile, "%f/%*f/%*f %f/%*f/%*f %f/%*f/%*f %f/%*f/%*f", &vertexIndex[0],  &vertexIndex[1], &vertexIndex[2], &vertexIndex[3]);
+			
 			if (3 == matches) {
 
 				vertexIndices.push_back(vertexIndex[0] - 1);
@@ -78,6 +97,22 @@ int CFileIn::readObj(const char* fileName)
 			}
 			tmp.push_back(t);
 		}
+		else if (not strcmp(lineHeader, "polygons"))
+		{
+			if (*cnt > count) {
+				++count;
+
+				tmp.clear();
+				id.clear();
+				temp_vertices.clear();
+				temp_normals.clear();
+				out_vertices.clear();
+				out_normals.clear();
+			}
+			else
+				break;
+		}
+		
 	}
 
 	for (int i{}; i < tmp.size(); ++i) {

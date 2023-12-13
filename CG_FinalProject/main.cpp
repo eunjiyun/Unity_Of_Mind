@@ -1,14 +1,10 @@
-//#include "stdafx.h"
 #include "shaders.h"
-
-//#include "object.h"
-
 #include "base.h"
 #include "wall.h"
 #include "player.h"
 #include "Image.h"
-
 #include "Light.h"
+#include "Map.h"
 
 
 
@@ -20,6 +16,8 @@ Wall wall;
 
 // 플레이어
 Player player;
+
+
 
 // 오브젝트들
 vector<Object*> objects;
@@ -198,6 +196,7 @@ GLvoid keyboard(unsigned char key, int x, int y)
 
 		player.init();
 		//player.setPos(vec3(0, 0, 0));
+
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
 		screen.initTex();
 
@@ -289,6 +288,43 @@ void init()
 
 	player.init();
 	objects.push_back(&player);
+	//map.init();
+	//map.setColor( glm::vec3(153 / 255, 204, 1));
+	vector<float> pv;
+	vector< GLubyte>pi;
+	int cnt{};
+	while (-1 != cnt) {
+		CMap map;
+		map.in.readObj("fbxToObj/Scene.obj", &cnt);
+		++cnt;
+
+		for (int i{}; i < map.in.out_vertices.size(); ++i) {
+			pv.push_back(map.in.out_vertices[i].x);
+			pv.push_back(map.in.out_vertices[i].y);
+			pv.push_back(map.in.out_vertices[i].z);
+		}
+
+		for (int i{}; i < map.in.out_normals.size(); ++i)
+			map.normals.push_back(map.in.out_normals[i]);
+
+		for (int i{}; i < map.in.vertexIndices.size(); ++i)
+			pi.push_back(map.in.vertexIndices[i]);
+
+		vector<float> playerColors;
+		for (int i = 0; i < 8; i++)
+		{
+			playerColors.push_back(1.f);
+			playerColors.push_back(0.f);
+			playerColors.push_back(0.f);
+		}
+		map.initModel(pv, playerColors, pi);
+		map.initBuf();
+
+		objects.push_back(&map);
+	}
+
+	
+	
 
 	screen.initBuf();
 	screen.initTex();
