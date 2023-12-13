@@ -26,6 +26,7 @@ protected:
 
 public:
     vector<glm::vec3>normals;
+    GLuint shadowMapFBO;
 public:
     Object();
     Object(vector<float> vertices, vector<float> colors);
@@ -70,5 +71,9 @@ public:
     glm::vec3 getScale();
     glm::vec3 getRotate();
     glm::vec3 getColor();
+
+    void renderShadowMapping(const glm::mat4&, GLuint);
+    void shadowRender(GLuint);
+    void shadowInit();
 
 } Object;

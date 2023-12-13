@@ -14,6 +14,20 @@ uniform vec3 lightPos; //--- 조명의 위치
 uniform vec3 lightColor; //--- 응용 프로그램에서 설정한 조명 색상
 uniform vec3 viewPos; //--- viewPos 값 전달: 카메라 위치
 
+// Shader에서 깊이 맵 사용
+uniform sampler2D depthMap;
+varying vec4 FragPosLightSpace;
+
+float calculateShadow() {
+    vec3 projCoords = FragPosLightSpace.xyz / FragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;  // 변환을 [0,1] 범위로 조정
+    float closestDepth = texture(depthMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+
+    return shadow;
+}
+
 void main()
 {
 	float ambientLight = 0.8; //--- 주변 조명 계수: 0.0 ≤ ambientLight ≤ 1.0
@@ -41,14 +55,23 @@ void main()
 	vec3 specular = vec3(specularLight * lightColor.x,specularLight * lightColor.y,specularLight * lightColor.z); //--- 거울 반사 조명값: 거울반사값 * 조명색상값
 
 
-	vec3 result = (ambient + diffuse + specular) * fColor; //--- 최종 조명 설정된 픽셀 색상: (주변+산란반사+거울반사조명)*객체 색상
+	//vec3 result = (ambient + diffuse + specular) * fColor; //--- 최종 조명 설정된 픽셀 색상: (주변+산란반사+거울반사조명)*객체 색상
 
-    if (fTexture.x>0) {
-        fragColor = texture(tex, fTexture);
-        return;
-    }
+    //if (fTexture.x>0) {
+        //fragColor = texture(tex, fTexture);
+       // return;
+   // }
+
+	// Fragment Shader에서 그림자 계산
+float shadow = calculateShadow();
+vec3 lighting = (ambient + diffuse + specular) * fColor/* 계산된 조명 값 */;
+vec3 result =  lighting *(1-shadow) ;
+
 
     fragColor = vec4(result, 0.5);
+
+
+	
 
 	//fragColor=vec4(fColor,1.0);
 }

@@ -9,16 +9,19 @@ out vec3 fPos; //--- 객체의 위치값을 프래그먼트 세이더로 보낸다.
 out vec3 fNormal; //--- 노멀값을 프래그먼트 세이더로 보낸다.
 out vec2 fTexture;
 out vec3 fColor;
-
+out vec4 FragPosLightSpace;  // 이 부분이 추가되었습니다.
 
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 lightSpaceMatrix;
 
 void main() 
 {
     gl_Position = projection * view * model * vec4(vPos, 1.0);
+
+    FragPosLightSpace = lightSpaceMatrix * vec4(vPos, 1.0);  // 버텍스 셰이더에서 FragPosLightSpace 계산
 
     fPos = vec3(model * vec4(vPos, 1.0)); //--- 객체에 대한 조명 계산을 프래그먼트 셰이더에서 한다. 
     //--- 따라서 월드공간에 있는 버텍스 값을 프래그먼트 셰이더로 보낸다.

@@ -114,6 +114,12 @@ void main(int argc, char** argv)
 
 GLvoid drawScene()
 {
+	//// Framebuffer 바인딩
+	//glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	//glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	//glClear(GL_DEPTH_BUFFER_BIT);
+
 	glClearColor(g_color[0], g_color[1], g_color[2], g_color[3]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shaderProgramID);
@@ -125,14 +131,19 @@ GLvoid drawScene()
 
 	screen.render(shaderProgramID);
 
+	
+
+
 	// Object Draw
 	if (1 == screen.status or 4 == screen.status or 5 == screen.status) {
 
 		// 마우스 커서 숨기기
 		ShowCursor(FALSE);
 
-		for (int i = 0; i < objects.size(); ++i)
+		for (int i{}; i < objects.size(); ++i) {
 			(*objects[i]).render(shaderProgramID);
+			(*objects[i]).shadowRender(shaderProgramID);
+		}
 	}
 
 	glutSwapBuffers();
@@ -294,6 +305,9 @@ void init()
 	screen.initTex();
 
 	light.InitBuffer(shaderProgramID, camera);
+
+	for (const auto& o : objects)
+		o->shadowInit();
 }
 
 void initCamera()
