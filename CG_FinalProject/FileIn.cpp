@@ -2,11 +2,10 @@
 
 int CFileIn::readObj(const char* fileName)
 {
-
 	FILE* objFile;
 	vector<vector<float>> tmp;
 	vector<int> id;
-	
+
 	errno_t err = fopen_s(&objFile, fileName, "rb");
 
 	if (NULL == objFile) {
@@ -49,7 +48,7 @@ int CFileIn::readObj(const char* fileName)
 			glm::vec3 normal;
 			fscanf(objFile, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
 
-			
+
 			temp_normals.push_back(normal);
 		}
 		else if (strcmp(lineHeader, "vt") == 0)
@@ -59,7 +58,7 @@ int CFileIn::readObj(const char* fileName)
 
 			temp_uvs.push_back(uv);
 		}
-		
+
 		else if (not strcmp(lineHeader, "f")) {
 
 			float vertexIndex[4];
@@ -68,21 +67,21 @@ int CFileIn::readObj(const char* fileName)
 
 			int matches;
 
-			if(strcmp(fileName, "object/Scene.obj"))
+			if (strcmp(fileName, "object/Scene.obj"))
 				matches = fscanf(objFile, "%f//%*f %f//%*f %f//%*f %f//%*f", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2], &vertexIndex[3]);
-			else 
+			else
 				matches = fscanf(objFile, "%f/%f/%*f %f/%f/%*f %f/%f/%*f %f/%f/%*f", &vertexIndex[0], &uvIndex[0], &vertexIndex[1], &uvIndex[1], &vertexIndex[2], &uvIndex[2], &vertexIndex[3], &uvIndex[3]);
-			
-			if (6 == matches or 3==matches) {
+
+			if (6 == matches or 3 == matches) {
 
 				vertexIndices.push_back(vertexIndex[0] - 1);
 				vertexIndices.push_back(vertexIndex[1] - 1);
 				vertexIndices.push_back(vertexIndex[2] - 1);
 
 				if (6 == matches) {
-					uvIndices.push_back(uvIndex[0]-1);
-					uvIndices.push_back(uvIndex[1]-1);
-					uvIndices.push_back(uvIndex[2]-1);
+					uvIndices.push_back(uvIndex[0] - 1);
+					uvIndices.push_back(uvIndex[1] - 1);
+					uvIndices.push_back(uvIndex[2] - 1);
 				}
 
 
@@ -92,7 +91,7 @@ int CFileIn::readObj(const char* fileName)
 				id.push_back(3);
 
 			}
-			else if (8 == matches or 4==matches) {
+			else if (8 == matches or 4 == matches) {
 				// 사각형의 경우
 				vertexIndices.push_back(vertexIndex[0] - 1);
 				vertexIndices.push_back(vertexIndex[1] - 1);
@@ -115,7 +114,7 @@ int CFileIn::readObj(const char* fileName)
 			tmp.push_back(t);
 
 		}
-		
+
 	}
 
 	for (int i{}; i < tmp.size(); ++i) {
@@ -129,7 +128,7 @@ int CFileIn::readObj(const char* fileName)
 		for (unsigned int i{}; i < uvIndices.size(); ++i)
 		{
 			unsigned int uvIndex{ uvIndices[i] };
-			glm::vec2 uv = temp_uvs[uvIndex];
+			glm::vec2 uv{ temp_uvs[uvIndex] };
 			out_uvs.push_back(uv);
 		}
 	}

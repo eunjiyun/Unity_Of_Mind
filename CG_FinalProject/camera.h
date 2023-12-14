@@ -74,7 +74,7 @@ public:
 
 	void moveLeft();
 	void moveRight();
-	
+
 	glm::mat4 getView();
 	glm::mat4 getProjection();
 	glm::mat4 getOrtho();

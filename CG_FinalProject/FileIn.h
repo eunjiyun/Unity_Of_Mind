@@ -14,6 +14,6 @@ public:
 	std::vector<glm::vec3> out_vertices, out_normals;
 
 public:
-	int readObj(const char* fileName );
+	int readObj(const char* fileName);
 };
 

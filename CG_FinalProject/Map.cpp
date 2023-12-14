@@ -3,41 +3,10 @@
 
 void CMap::init()
 {
-	
-	vector<float> playerColors;
-
-	for (int i = 0; i < 8; i++)
-	{
-		playerColors.push_back(1.f);
-		playerColors.push_back(1.f);
-		playerColors.push_back(0.f);
-	}
-
-	const vector<GLubyte> playerIndices = {
-		// ¾Õ¸é
-		4 , 5 , 7,
-		7 , 6 , 4,
-		// µÞ¸é
-		1 , 0 , 3,
-		0 , 2 , 3,
-		// ¹Ù´Ú¸é
-		1 , 5 , 4,
-		4 , 0 , 1,
-		// À­¸é
-		3 , 2 , 6,
-		6 , 7 , 3,
-		// ¿À¸¥ÂÊ¸é
-		1 , 3 , 7,
-		7 , 5 , 1,
-		// ¿ÞÂÊ¸é
-		6 , 2 , 0,
-		0 , 4 , 6,
-	};
-
 	vector<float> pv;
 	vector< GLubyte>pi;
 	in.readObj("object/Scene.obj");
-	float max_abs_coord;
+
 	for (int i{}; i < in.out_vertices.size(); ++i) {
 		pv.push_back(in.out_vertices[i].x);
 		pv.push_back(in.out_vertices[i].y);
@@ -45,12 +14,10 @@ void CMap::init()
 
 		// Á¤±ÔÈ­µÈ UV ÁÂÇ¥ °è»ê
 		in.out_uvs[i].x = (in.out_vertices[i].x + 5.f) * 0.5f;  // [-1, 1] -> [0, 1]
-		in.out_uvs[i].y = (in.out_vertices[i].y -1.f) * 0.5f;  // [-1, 1] -> [0, 1]
-		
+		in.out_uvs[i].y = (in.out_vertices[i].y - 1.f) * 0.5f;  // [-1, 1] -> [0, 1]
+
 		uvs.push_back(in.out_uvs[i]);
 	}
-
-
 
 	for (int i{}; i < in.out_normals.size(); ++i)
 		normals.push_back(in.out_normals[i]);
@@ -58,7 +25,8 @@ void CMap::init()
 	for (int i{}; i < in.vertexIndices.size(); ++i)
 		pi.push_back(in.vertexIndices[i]);
 
-	initModel(pv, playerColors, pi);
+	vector<float> c;
+	initModel(pv, c, pi);
 	initBuf();
 	initTexture();
 }
@@ -94,7 +62,7 @@ void CMap::render(GLuint shaderProgramID)
 	glBindVertexArray(vao);
 
 	model = glm::mat4(1.f);
-	
+
 
 	glBindTexture(GL_TEXTURE_2D, texId);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
@@ -104,9 +72,9 @@ void CMap::render(GLuint shaderProgramID)
 
 void CMap::drawS(GLuint shaderProgramID)
 {
-	
+
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-	
+
 	glBindTexture(GL_TEXTURE_2D, texId);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 

@@ -3,38 +3,38 @@
 
 Object::Object()
 {
-    initPos();
+	initPos();
 
-    const vector<float> t{ {
-      1, 0, -10, 0, 0, 1, 0, 1,
-        1, 1, -10, 0, 0, 1, 0, 0,
-        0, 1, -10, 0, 0, 1, 1, 0,
-        1, 0, -10, 0, 0, 1, 0, 1,
-        0, 1, -10, 0, 0, 1, 1, 0,
-        0, 0, -10, 0, 0, 1, 1, 1  } };
+	const vector<float> t{ {
+	  1, 0, -10, 0, 0, 1, 0, 1,
+		1, 1, -10, 0, 0, 1, 0, 0,
+		0, 1, -10, 0, 0, 1, 1, 0,
+		1, 0, -10, 0, 0, 1, 0, 1,
+		0, 1, -10, 0, 0, 1, 1, 0,
+		0, 0, -10, 0, 0, 1, 1, 1  } };
 
-    for (int i{}; i < t.size(); i += 8)
-        normals.push_back(glm::vec3(t[i + 3], t[i + 4], t[i + 5]));
+	for (int i{}; i < t.size(); i += 8)
+		normals.push_back(glm::vec3(t[i + 3], t[i + 4], t[i + 5]));
 
 }
 
 Object::Object(vector<float> vertices, vector<float> colors)
 {
-    initPos();
-    initModel(vertices, colors);
+	initPos();
+	initModel(vertices, colors);
 }
 
 Object::Object(vector<float> vertices, vector<float> colors, vector<GLubyte> indices)
 {
-    initPos();
-    initModel(vertices, colors, indices);
+	initPos();
+	initModel(vertices, colors, indices);
 }
 
 void Object::initPos()
 {
-    pos = glm::vec3(0.0f, 0.0f, 0.0f);
-    scale = glm::vec3(1.0f, 1.0f, 1.0f);
-    rotate = glm::vec3(0.0f, 0.0f, 0.0f);
+	pos = glm::vec3(0.0f, 0.0f, 0.0f);
+	scale = glm::vec3(1.0f, 1.0f, 1.0f);
+	rotate = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 void Object::setPos(glm::vec3 pos) { this->pos = pos; }
@@ -65,73 +65,73 @@ glm::vec3 Object::getColor() { return color; }
 
 void Object::setModelPos(vector<float> vertices)
 {
-    for (int i = 0; i < vertices.size(); i++)
-    {
-        this->vertices.push_back(vertices[i]);
-    }
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		this->vertices.push_back(vertices[i]);
+	}
 }
 void Object::setModelColor(vector<float> colors)
 {
-    for (int i = 0; i < colors.size(); i++)
-    {
-        this->colors.push_back(colors[i]);
-    }
+	for (int i = 0; i < colors.size(); i++)
+	{
+		this->colors.push_back(colors[i]);
+	}
 }
 void Object::setModelIndices(vector<GLubyte> indices)
 {
-    for (int i = 0; i < indices.size(); i++)
-    {
-        this->indices.push_back(indices[i]);
-    }
+	for (int i = 0; i < indices.size(); i++)
+	{
+		this->indices.push_back(indices[i]);
+	}
 }
 
 void Object::initModel(vector<float> vertices, vector<float> colors)
 {
-    setModelPos(vertices);
-    setModelColor(colors);
+	setModelPos(vertices);
+	setModelColor(colors);
 }
 
 void Object::initModel(vector<float> vertices, vector<float> colors, vector<GLubyte> indices)
 {
-    setModelPos(vertices);
-    setModelColor(colors);
-    setModelIndices(indices);
+	setModelPos(vertices);
+	setModelColor(colors);
+	setModelIndices(indices);
 }
 
 void Object::init()
 {
-    initPos();
-    initBuffer();
+	initPos();
+	initBuffer();
 }
 
 void Object::initBuffer()
 {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    glEnableVertexAttribArray(0);
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(0);
 
-    glGenBuffers(1, &normBo);
-    glBindBuffer(GL_ARRAY_BUFFER, normBo);
-    glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    glEnableVertexAttribArray(1);
-    
+	glGenBuffers(1, &normBo);
+	glBindBuffer(GL_ARRAY_BUFFER, normBo);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(1);
 
-    glGenBuffers(1, &cbo);
-    glBindBuffer(GL_ARRAY_BUFFER, cbo);
-    glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    glEnableVertexAttribArray(1);
 
-    if (!indices.empty())
-    {
-        glGenBuffers(1, &ebo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size(), &indices[0], GL_STATIC_DRAW);
-    }
+	glGenBuffers(1, &cbo);
+	glBindBuffer(GL_ARRAY_BUFFER, cbo);
+	glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(float), &colors[0], GL_STATIC_DRAW);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(1);
+
+	if (!indices.empty())
+	{
+		glGenBuffers(1, &ebo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size(), &indices[0], GL_STATIC_DRAW);
+	}
 }
