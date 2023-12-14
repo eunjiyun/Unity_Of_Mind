@@ -38,10 +38,11 @@ int CFileIn::readObj(const char* fileName)
 				vertex.z += 0.8f;
 			}
 			else {
-				vertex.x /= 1000.f;
-				vertex.y /= 1000.f;
-				vertex.z /= 1000.f;
-				vertex.y -= 0.8f;
+				vertex.x /= 800.f;
+				vertex.y /= 800.f;
+				vertex.z /= 800.f;
+				vertex.y -= 0.3f;
+				vertex.x += 2.3f;
 				//vertex.z += 0.8f;
 			}
 
@@ -64,8 +65,13 @@ int CFileIn::readObj(const char* fileName)
 			glm::vec2 uv;
 			fscanf(objFile, "%f %f\n", &uv.x, &uv.y);
 
-			uv.x /= 1.5f;
-			uv.y /= 1.5f;
+			/*uv.x /= 1.5f;
+			uv.y /= 1.5f;*/
+
+			/*uv.x *= 3.1f;
+			uv.y *= 3.1f;*/
+
+			
 			//uv.y -= 2;
 			temp_uvs.push_back(uv);
 		}

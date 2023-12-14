@@ -38,14 +38,32 @@ void CMap::init()
 	vector<float> pv;
 	vector< GLubyte>pi;
 	in.readObj("fbxToObj/Scene.obj");
-
+	float max_abs_coord;
 	for (int i{}; i < in.out_vertices.size(); ++i) {
 		pv.push_back(in.out_vertices[i].x);
 		pv.push_back(in.out_vertices[i].y);
 		pv.push_back(in.out_vertices[i].z);
 
+		// 정규화된 UV 좌표 계산
+		in.out_uvs[i].x = (in.out_vertices[i].x + 1.0f) * 0.5f;  // [-1, 1] -> [0, 1]
+		in.out_uvs[i].y = (in.out_vertices[i].y + 1.0f) * 0.5f;  // [-1, 1] -> [0, 1]
 		uvs.push_back(in.out_uvs[i]);
+
+		//// Assuming in.out_vertices[i] represents a 3D vertex
+		//max_abs_coord = std::max({ std::abs(in.out_vertices[i].x), std::abs(in.out_vertices[i].y), std::abs(in.out_vertices[i].z) });
+
+		////// Normalize X, Y, and Z coordinates
+		////in.out_uvs[i].x = (in.out_vertices[i].x + max_abs_coord) / (2.0f * max_abs_coord);
+		////in.out_uvs[i].y = (in.out_vertices[i].y + max_abs_coord) / (2.0f * max_abs_coord);
+		////uvs.push_back(in.out_uvs[i]);
 	}
+
+	//for (int i{}; i < in.out_vertices.size(); ++i) {
+	//	// Normalize X, Y, and Z coordinates
+	//	in.out_uvs[i].x = (in.out_vertices[i].x + max_abs_coord) / (2.0f * max_abs_coord);
+	//	in.out_uvs[i].y = (in.out_vertices[i].y + max_abs_coord) / (2.0f * max_abs_coord);
+	//	uvs.push_back(in.out_uvs[i]);
+	//}
 
 	for (int i{}; i < in.out_normals.size(); ++i)
 		normals.push_back(in.out_normals[i]);
