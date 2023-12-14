@@ -50,7 +50,7 @@ void Player::init()
 	vector< GLubyte>pi;
 	int cnt{};
 
-	in.readObj("fbxToObj/voodoo5.obj",&cnt);
+	in.readObj("fbxToObj/voodoo5.obj");
 
 	for (int i{}; i < in.out_vertices.size(); ++i) {
 		pv.push_back(in.out_vertices[i].x);

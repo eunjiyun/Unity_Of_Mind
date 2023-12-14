@@ -18,6 +18,7 @@ uniform mat4 projection;
 
 void main() 
 {
+
     gl_Position = projection * view * model * vec4(vPos, 1.0);
 
     fPos = vec3(model * vec4(vPos, 1.0)); //--- 객체에 대한 조명 계산을 프래그먼트 셰이더에서 한다. 

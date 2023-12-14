@@ -6,7 +6,7 @@ typedef class Object
 {
 protected:
     glm::vec3 pos;
-    glm::vec3 scale;
+    glm::vec3 scale; 
     glm::vec3 rotate;
     glm::vec3 color;
 

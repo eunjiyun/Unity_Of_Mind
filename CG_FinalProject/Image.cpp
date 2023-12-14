@@ -80,7 +80,7 @@ void CImage::initTex()
     if (0 == status)
         data = stbi_load("texture/start.jpg", &width, &height, &channel, 0);
     else if (1 == status)
-        data = stbi_load("texture/b.png", &width, &height, &channel, 0);
+        data = stbi_load("texture/sky.jpg", &width, &height, &channel, 0);
     else if(2==status)
         data = stbi_load("texture/win.jpg", &width, &height, &channel, 0);
     else if(3==status)

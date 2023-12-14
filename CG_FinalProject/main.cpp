@@ -16,6 +16,7 @@ Wall wall;
 
 // 플레이어
 Player player;
+CMap map;
 
 
 
@@ -128,6 +129,8 @@ GLvoid drawScene()
 
 		// 마우스 커서 숨기기
 		ShowCursor(FALSE);
+
+		map.render(shaderProgramID);
 
 		for (int i = 0; i < objects.size(); ++i)
 			(*objects[i]).render(shaderProgramID);
@@ -288,40 +291,40 @@ void init()
 
 	player.init();
 	objects.push_back(&player);
-	//map.init();
-	//map.setColor( glm::vec3(153 / 255, 204, 1));
-	vector<float> pv;
-	vector< GLubyte>pi;
-	int cnt{};
-	while (-1 != cnt) {
-		CMap map;
-		map.in.readObj("fbxToObj/Scene.obj", &cnt);
-		++cnt;
+	map.init();
+	////map.setColor( glm::vec3(153 / 255, 204, 1));
+	//vector<float> pv;
+	//vector< GLubyte>pi;
+	//int cnt{};
+	//while (-1 != cnt) {
+	//	CMap map;
+	//	map.in.readObj("fbxToObj/Scene.obj", &cnt);
+	//	++cnt;
 
-		for (int i{}; i < map.in.out_vertices.size(); ++i) {
-			pv.push_back(map.in.out_vertices[i].x);
-			pv.push_back(map.in.out_vertices[i].y);
-			pv.push_back(map.in.out_vertices[i].z);
-		}
+	//	for (int i{}; i < map.in.out_vertices.size(); ++i) {
+	//		pv.push_back(map.in.out_vertices[i].x);
+	//		pv.push_back(map.in.out_vertices[i].y);
+	//		pv.push_back(map.in.out_vertices[i].z);
+	//	}
 
-		for (int i{}; i < map.in.out_normals.size(); ++i)
-			map.normals.push_back(map.in.out_normals[i]);
+	//	for (int i{}; i < map.in.out_normals.size(); ++i)
+	//		map.normals.push_back(map.in.out_normals[i]);
 
-		for (int i{}; i < map.in.vertexIndices.size(); ++i)
-			pi.push_back(map.in.vertexIndices[i]);
+	//	for (int i{}; i < map.in.vertexIndices.size(); ++i)
+	//		pi.push_back(map.in.vertexIndices[i]);
 
-		vector<float> playerColors;
-		for (int i = 0; i < 8; i++)
-		{
-			playerColors.push_back(1.f);
-			playerColors.push_back(0.f);
-			playerColors.push_back(0.f);
-		}
-		map.initModel(pv, playerColors, pi);
-		map.initBuf();
+	//	vector<float> playerColors;
+	//	for (int i = 0; i < 8; i++)
+	//	{
+	//		playerColors.push_back(1.f);
+	//		playerColors.push_back(0.f);
+	//		playerColors.push_back(0.f);
+	//	}
+	//	map.initModel(pv, playerColors, pi);
+	//	map.initBuf();
 
-		objects.push_back(&map);
-	}
+		//objects.push_back(&map);
+	//}
 
 	
 	
