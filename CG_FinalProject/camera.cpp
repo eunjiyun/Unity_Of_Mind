@@ -14,7 +14,6 @@ Camera::Camera()
 
 	fovy = 45.0f;
 	aspect = 800.0f / 800.0f;
-	//aspect = winW / winH;
 
 	zNear = 0.1f;
 	zFar = 100.0f;
@@ -58,7 +57,7 @@ void Camera::setCamera(GLuint shaderProgramID, int type, CameraMode c, glm::vec3
 		pitch = glm::degrees(asin(direction.y));
 		yaw = glm::degrees(atan2(direction.z, direction.x));
 	}
-	else{
+	else {
 		eye = glm::vec3(0, 1, 2);
 
 		setYaw(-90.f);
@@ -86,13 +85,13 @@ void Camera::setWinSize(float w, float h)
 
 void Camera::moveLeft()
 {
-	if (-0.35f <eye.x )
+	if (-0.35f < eye.x)
 		eye.x -= 0.05f;
 }
 
 void Camera::moveRight()
 {
-	if (0.35f>eye.x)
+	if (0.35f > eye.x)
 		eye.x += 0.05f;
 }
 

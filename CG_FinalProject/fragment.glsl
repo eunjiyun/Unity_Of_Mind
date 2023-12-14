@@ -44,6 +44,7 @@ void main()
 	vec3 result = (ambient + diffuse + specular) * fColor; //--- 최종 조명 설정된 픽셀 색상: (주변+산란반사+거울반사조명)*객체 색상
 
     if (fTexture.x>0) {
+	
         fragColor = texture(tex, fTexture);
         return;
     }

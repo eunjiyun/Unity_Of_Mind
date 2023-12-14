@@ -1,15 +1,10 @@
-//#include "stdafx.h"
 #include "shaders.h"
-
-//#include "object.h"
-
 #include "base.h"
 #include "wall.h"
 #include "player.h"
 #include "Image.h"
-
 #include "Light.h"
-
+#include "Map.h"
 
 
 // 바닥
@@ -20,6 +15,9 @@ Wall wall;
 
 // 플레이어
 Player player;
+
+//맵
+CMap map;
 
 // 오브젝트들
 vector<Object*> objects;
@@ -131,6 +129,8 @@ GLvoid drawScene()
 		// 마우스 커서 숨기기
 		ShowCursor(FALSE);
 
+		map.render(shaderProgramID);
+
 		for (int i = 0; i < objects.size(); ++i)
 			(*objects[i]).render(shaderProgramID);
 	}
@@ -180,7 +180,7 @@ GLvoid keyboard(unsigned char key, int x, int y)
 
 	case '[':
 
-		if (1 == screen.status or 4 == screen.status or 5== screen.status) {
+		if (1 == screen.status or 4 == screen.status or 5 == screen.status) {
 			screen.status = 2;
 
 			PlaySound(L"sound/win.wav", NULL, SND_ASYNC | SND_LOOP);//sound
@@ -198,6 +198,7 @@ GLvoid keyboard(unsigned char key, int x, int y)
 
 		player.init();
 		//player.setPos(vec3(0, 0, 0));
+
 		camera.setCamera(shaderProgramID, 0, cameraMode, player.getPos());
 		screen.initTex();
 
@@ -289,6 +290,8 @@ void init()
 
 	player.init();
 	objects.push_back(&player);
+	map.init();
+
 
 	screen.initBuf();
 	screen.initTex();
@@ -329,7 +332,7 @@ GLvoid update(int value)
 void wallUpdate()
 {
 	wall.moveWall();
-	
+
 
 	if (30 == wall.cur_idx) {
 		screen.status = 2;
@@ -365,8 +368,8 @@ void wallUpdate()
 				if ((player.getPos().x/*-0.01f*/ >= wall.emptyIdx[i].y * 0.3333f - 0.5f
 					and player.getPos().x + 0.13f <= wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)//pl==cube
 
-					or (player.getPos().x+0.13f > wall.emptyIdx[i].y * 0.3333f - 0.5f
-					and player.getPos().x/*-0.01f*/<wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)) {
+					or (player.getPos().x + 0.13f > wall.emptyIdx[i].y * 0.3333f - 0.5f
+						and player.getPos().x/*-0.01f*/ < wall.emptyIdx[i].y * 0.3333f + 0.3333f - 0.5f)) {
 
 					if (0 == (wall.cur_idx - 1) / 10) {
 
@@ -423,7 +426,7 @@ void wallUpdate()
 	}
 
 	if (not wall.emptyIdx.empty() and 1.3f < wall.getCube(wall.emptyIdx[0].x, wall.emptyIdx[0].y).getPos().z) {
-		
+
 		player.crashOnce = false;
 		wall.emptyIdx.clear();
 	}

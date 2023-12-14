@@ -87,10 +87,8 @@ void Base::render(GLuint shaderProgramID)
 {
 	model = glm::mat4(1.f);
 
-	//glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), color.r, color.g, color.b);
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	glBindVertexArray(vao);
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());

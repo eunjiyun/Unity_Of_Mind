@@ -20,6 +20,6 @@ public:
 	} };
 public:
 
-	void InitBuffer(GLuint,Camera);
+	void InitBuffer(GLuint, Camera);
 };
 
