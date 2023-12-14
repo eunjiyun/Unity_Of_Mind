@@ -34,10 +34,9 @@ void CMap::init()
 		0 , 4 , 6,
 	};
 
-	//color = glm::vec3(153/255, 204,1);
 	vector<float> pv;
 	vector< GLubyte>pi;
-	in.readObj("fbxToObj/Scene.obj");
+	in.readObj("object/Scene.obj");
 	float max_abs_coord;
 	for (int i{}; i < in.out_vertices.size(); ++i) {
 		pv.push_back(in.out_vertices[i].x);
@@ -45,36 +44,19 @@ void CMap::init()
 		pv.push_back(in.out_vertices[i].z);
 
 		// 정규화된 UV 좌표 계산
-		//in.out_vertices[i].y -=0.3f;
 		in.out_uvs[i].x = (in.out_vertices[i].x + 5.f) * 0.5f;  // [-1, 1] -> [0, 1]
 		in.out_uvs[i].y = (in.out_vertices[i].y -1.f) * 0.5f;  // [-1, 1] -> [0, 1]
-		//in.out_vertices[i].y+0.3
+		
 		uvs.push_back(in.out_uvs[i]);
-
-		//// Assuming in.out_vertices[i] represents a 3D vertex
-		//max_abs_coord = std::max({ std::abs(in.out_vertices[i].x), std::abs(in.out_vertices[i].y), std::abs(in.out_vertices[i].z) });
-
-		////// Normalize X, Y, and Z coordinates
-		////in.out_uvs[i].x = (in.out_vertices[i].x + max_abs_coord) / (2.0f * max_abs_coord);
-		////in.out_uvs[i].y = (in.out_vertices[i].y + max_abs_coord) / (2.0f * max_abs_coord);
-		////uvs.push_back(in.out_uvs[i]);
 	}
 
-	//for (int i{}; i < in.out_vertices.size(); ++i) {
-	//	// Normalize X, Y, and Z coordinates
-	//	in.out_uvs[i].x = (in.out_vertices[i].x + max_abs_coord) / (2.0f * max_abs_coord);
-	//	in.out_uvs[i].y = (in.out_vertices[i].y + max_abs_coord) / (2.0f * max_abs_coord);
-	//	uvs.push_back(in.out_uvs[i]);
-	//}
+
 
 	for (int i{}; i < in.out_normals.size(); ++i)
 		normals.push_back(in.out_normals[i]);
 
 	for (int i{}; i < in.vertexIndices.size(); ++i)
 		pi.push_back(in.vertexIndices[i]);
-
-	/*for (int i{}; i < in.out_uvs.size(); ++i)
-		uvs.push_back(in.out_uvs[i]);*/
 
 	initModel(pv, playerColors, pi);
 	initBuf();
@@ -85,14 +67,10 @@ void CMap::initBuf()
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	/*vector<float>tv;
-	for (const auto& v : vertices) {
-		tv.push_back(v / 1000.f);
-	}*/
 
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &tv[0], GL_STATIC_DRAW);
+
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(0);
@@ -116,16 +94,10 @@ void CMap::render(GLuint shaderProgramID)
 	glBindVertexArray(vao);
 
 	model = glm::mat4(1.f);
-	//model = glm::translate(model, pos);
-	//scale = glm::vec3(1 / 2, 1 / 2, 1 /2);
-	//model = glm::scale(model, scale);
-	//model = glm::scale(model, vec3(0.001f, 0.001f, 0.001f));
+	
 
 	glBindTexture(GL_TEXTURE_2D, texId);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-
-	//glm::mat4 modelMatrix = glm::mat4(1.0f);
-	//modelMatrix = glm::scale(modelMatrix, glm::vec3(scale));
 
 	drawS(shaderProgramID);
 }
@@ -134,36 +106,10 @@ void CMap::drawS(GLuint shaderProgramID)
 {
 	
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-	//glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), color.r, color.g, color.b);
-
-	//if (crashOnce) 
-	/*{
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}*/
+	
 	glBindTexture(GL_TEXTURE_2D, texId);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
-	//glUniform3f(glGetUniformLocation(shaderProgramID, "fColor"), 1, 0, 0);
-	//glDrawArrays(GL_TRIANGLES, 5000, vertices.size());
-
-	//if (crashOnce)
-		//glDisable(GL_BLEND);
-
-
-
-	/*glUseProgram(ID);
-
-	model = mat4(1.0);
-	model = translate(model, pos);
-	model = glm::scale(model, scale);
-
-	glUniformMatrix4fv(glGetUniformLocation(ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-
-	glBindVertexArray(vao);
-
-	glBindTexture(GL_TEXTURE_2D, texId);
-	glDrawArrays(GL_TRIANGLES, 0, vert.size());*/
 }
 
 void CMap::initTexture()
@@ -180,7 +126,7 @@ void CMap::initTexture()
 	unsigned char* data;
 
 	glBindTexture(GL_TEXTURE_2D, texId);
-	data = stbi_load("texture/texture_main.png", &width, &height, &nrChannels, 0);//texture_main
+	data = stbi_load("texture/map.png", &width, &height, &nrChannels, 0);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	stbi_image_free(data);
 }
