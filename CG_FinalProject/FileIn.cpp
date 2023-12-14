@@ -42,7 +42,7 @@ int CFileIn::readObj(const char* fileName)
 				vertex.y /= 800.f;
 				vertex.z /= 800.f;
 				vertex.y -= 0.3f;
-				vertex.x += 2.3f;
+				vertex.x += 2.29f;
 				//vertex.z += 0.8f;
 			}
 

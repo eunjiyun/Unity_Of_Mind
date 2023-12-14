@@ -45,8 +45,8 @@ void CMap::init()
 		pv.push_back(in.out_vertices[i].z);
 
 		// 정규화된 UV 좌표 계산
-		in.out_uvs[i].x = (in.out_vertices[i].x + 1.0f) * 0.5f;  // [-1, 1] -> [0, 1]
-		in.out_uvs[i].y = (in.out_vertices[i].y + 1.0f) * 0.5f;  // [-1, 1] -> [0, 1]
+		in.out_uvs[i].x = (in.out_vertices[i].x + 3.f) * 0.5f;  // [-1, 1] -> [0, 1]
+		in.out_uvs[i].y = (in.out_vertices[i].y + 3.f) * 0.5f;  // [-1, 1] -> [0, 1]
 		uvs.push_back(in.out_uvs[i]);
 
 		//// Assuming in.out_vertices[i] represents a 3D vertex
