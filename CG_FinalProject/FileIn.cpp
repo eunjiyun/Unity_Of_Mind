@@ -19,10 +19,9 @@ int CFileIn::readObj(const char* fileName)
 		char lineHeader[65535];
 
 		int res = fscanf(objFile, "%s", lineHeader);
-		if (EOF == res) {
-			//*cnt = -1;
+		if (EOF == res) 
 			break;
-		}
+		
 
 		if (not strcmp(lineHeader, "v")) {
 			glm::vec3 vertex;
@@ -138,42 +137,3 @@ int CFileIn::readObj(const char* fileName)
 
 
 
-//int matches = fscanf(objFile, "%f/%f/%*f %f/%f/%*f %f/%f/%*f %f/%f/%*f", &vertexIndex[0], &uvIndex[0], &vertexIndex[1], &uvIndex[1], &vertexIndex[2], &uvIndex[2], &vertexIndex[3], &uvIndex[3]);
-//if (6 == matches) {
-//
-//	vertexIndices.push_back(vertexIndex[0] - 1);
-//	vertexIndices.push_back(vertexIndex[1] - 1);
-//	vertexIndices.push_back(vertexIndex[2] - 1);
-//
-//	uvIndices.push_back(uvIndex[0]);
-//	uvIndices.push_back(uvIndex[1]);
-//	uvIndices.push_back(uvIndex[2]);
-//
-//
-//	t.push_back(vertexIndex[0] - 1);
-//	t.push_back(vertexIndex[1] - 1);
-//	t.push_back(vertexIndex[2] - 1);
-//	id.push_back(3);
-//
-//}
-//else if (8 == matches) {
-//	// 사각형의 경우
-//	vertexIndices.push_back(vertexIndex[0] - 1);
-//	vertexIndices.push_back(vertexIndex[1] - 1);
-//	vertexIndices.push_back(vertexIndex[2] - 1);
-//
-//	vertexIndices.push_back(vertexIndex[0] - 1);
-//	vertexIndices.push_back(vertexIndex[2] - 1);
-//	vertexIndices.push_back(vertexIndex[3] - 1);
-//
-//
-//	t.push_back(vertexIndex[0] - 1);
-//	t.push_back(vertexIndex[1] - 1);
-//	t.push_back(vertexIndex[2] - 1);
-//
-//	t.push_back(vertexIndex[0] - 1);
-//	t.push_back(vertexIndex[2] - 1);
-//	t.push_back(vertexIndex[3] - 1);
-//	id.push_back(6);
-//}
-//tmp.push_back(t);
